@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Exposure</string>
+    <string name="NETWORK_ERROR">Erreur de communication réseau</string>
+    <string name="UNKNOWN_ERROR">Erreur inconnue</string>
+    <string name="CONNECTION_REFUSED">Connexion refusée</string>
+    <string name="NO_SESSION_TOKEN">Jeton de session manquant</string>
+</resources>
