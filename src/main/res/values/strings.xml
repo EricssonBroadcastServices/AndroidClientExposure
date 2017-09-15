@@ -1,28 +1,23 @@
 <resources>
-    <string name="app_name">Exposure</string>
-    <string name="DEVICE_LIMIT_EXCEEDED" translatable="false">The account is not allowed to register more devices</string>
-    <string name="SESSION_LIMIT_EXCEEDED" translatable="false">The account has maximum allowed sessions</string>
-    <string name="UNKNOWN_DEVICE_ID" translatable="false">Device body is missing or the device ID is not found</string>
-    <string name="INVALID_JSON" translatable="false">JSON received is not valid JSON</string>
-    <string name="INCORRECT_CREDENTIALS" translatable="false">Underlying CRM does not accept the given credentials</string>
-    <string name="UNKNOWN_BUSINESS_UNIT" translatable="false">The business unit can not be found</string>
-    <string name="NO_SESSION_TOKEN">Session token is missing</string>
-    <string name="INVALID_SESSION_TOKEN" translatable="false">Session token was provided but not valid</string>
-    <string name="UNKNOWN_ASSET" translatable="false">The asset was not found</string>
-    <string name="NOT_ENTITLED" translatable="false">User is not entitled to play this asset</string>
-    <string name="DEVICE_BLOCKED" translatable="false">The user device is not allowed to play the asset</string>
-    <string name="GEO_BLOCKED" translatable="false">The user is in a country that is not allowed to play the asset</string>
-    <string name="LICENSE_EXPIRED" translatable="false">Asset exists but is expired</string>
-    <string name="NOT_ENABLED" translatable="false">Media is registered but is not enabled for streaming</string>
-    <string name="DOWNLOAD_TOTAL_LIMIT_REACHED" translatable="false">User has reached the total limit on downloaded assets across devices</string>
-    <string name="DOWNLOAD_ASSET_LIMIT_REACHED" translatable="false">This asset has been downloaded the maximum number of times by this user</string>
-    <string name="ALREADY_DOWNLOADED" translatable="false">Asset downloaded and may not be streamed</string>
-    <string name="DOWNLOAD_BLOCKED" translatable="false">This user is not allowed to download this asset</string>
-    <string name="CONCURRENT_STREAMS_LIMIT_REACHED" translatable="false">The maximum number of concurrent stream limit is reached</string>
-    <string name="NOT_AVAILABLE_IN_FORMAT" translatable="false">The media is not available in a format that can be played on this device</string>
-    <string name="FORBIDDEN" translatable="false">Request forbidden</string>
-    <string name="CONNECTION_REFUSED">Connection refused</string>
-    <string name="UNKNOWN_ERROR">Unknown error</string>
-    <string name="NETWORK_ERROR">Network communication error</string>
-</resources>
+    <string name="app_name">Ericsson Reference App</string>
 
+    <!-- Login related strings -->
+    <string name="prompt_environment">Environment</string>
+    <string name="prompt_customer">Customer</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_remember_me">Remember me</string>
+    <string name="prompt_anonymous">Anonymous</string>
+
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_out">Sign out</string>
+
+    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+
+    <string name="info_sign_in">Signing in...</string>
+
+    <string name="action_settings">Settings</string>
+
+</resources>

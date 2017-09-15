@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Stage",
+    "exposureUrl": "https://exposure.emps.ebsd.ericsson.net",
+    "customers": [
+      {
+        "name": "Blixt",
+        "customer": "BlixtGroup",
+        "businessUnit": "Blixt",
+        "defaultUsername": "",
+        "defaultPassword": ""
+      }
+    ]
+  },
+  {
+    "name": "Production",
+    "exposureUrl": "https://exposureapi.emp.ebsd.ericsson.net",
+    "customers": []
+  }
+]

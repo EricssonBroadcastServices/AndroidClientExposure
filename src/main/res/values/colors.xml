@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ericsson primary colors -->
+    <color name="white">#FFFFFF</color>
+    
+    <color name="ericssonDarkBlue">#FF00285F</color>
+    <color name="ericssonDarkBlue80">#CC00285F</color>
+    <color name="ericssonDarkBlue60">#9900285F</color>
+    <color name="ericssonDarkBlue40">#6600285F</color>
+    <color name="ericssonDarkBlue20">#3300285F</color>
+
+    <!-- Ericsson secondary colors -->
+    <color name="black">#FF000000</color>
+    <color name="black80">#CC000000</color>
+    <color name="black60">#99000000</color>
+    <color name="black40">#66000000</color>
+    <color name="black20">#33000000</color>
+
+    <color name="silver">#FFB1B3B4</color>
+    <color name="silver80">#CCB1B3B4</color>
+    <color name="silver60">#99B1B3B4</color>
+    <color name="silver40">#66B1B3B4</color>
+    <color name="silver20">#33B1B3B4</color>
+
+    <color name="purple">#FF7B0663</color>
+    <color name="purple80">#CC7B0663</color>
+    <color name="purple60">#997B0663</color>
+    <color name="purple40">#667B0663</color>
+    <color name="purple20">#337B0663</color>
+
+    <color name="red">#FFE32119</color>
+    <color name="red80">#CCE32119</color>
+    <color name="red60">#99E32119</color>
+    <color name="red40">#66E32119</color>
+    <color name="red20">#33E32119</color>
+
+    <color name="orange">#FFF08A00</color>
+    <color name="orange80">#CCF08A00</color>
+    <color name="orange60">#99F08A00</color>
+    <color name="orange40">#66F08A00</color>
+    <color name="orange20">#33F08A00</color>
+
+    <color name="yellow">#FFFABB00</color>
+    <color name="yellow80">#CCFABB00</color>
+    <color name="yellow60">#99FABB00</color>
+    <color name="yellow40">#66FABB00</color>
+    <color name="yellow20">#33FABB00</color>
+
+    <color name="green">#FF89BA17</color>
+    <color name="green80">#CC89BA17</color>
+    <color name="green60">#9989BA17</color>
+    <color name="green40">#6689BA17</color>
+    <color name="green20">#3389BA17</color>
+
+    <color name="darkGreen">#FF00625F</color>
+    <color name="darkGreen80">#CC00625F</color>
+    <color name="darkGreen60">#9900625F</color>
+    <color name="darkGreen40">#6600625F</color>
+    <color name="darkGreen20">#3300625F</color>
+
+    <color name="paleBlue">#FF00A9D4</color>
+    <color name="paleBlue80">#CC00A9D4</color>
+    <color name="paleBlue60">#9900A9D4</color>
+    <color name="paleBlue40">#6600A9D4</color>
+    <color name="paleBlue20">#3300A9D4</color>
+</resources>
