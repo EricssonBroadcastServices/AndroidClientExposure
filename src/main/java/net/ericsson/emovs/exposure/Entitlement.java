@@ -1,8 +1,6 @@
 package net.ericsson.emovs.exposure;
 
-import java.io.Serializable;
-
-public class ImcPlaybackArguments implements Serializable {
+public class Entitlement {
     public String assetId;
     public String channelId;
     public String programId;

@@ -15,6 +15,10 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
+import net.ericsson.emovs.exposure.Entitlement;
+
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +32,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class ExposureClient {
     private final static String TAG = "ExposureClient";

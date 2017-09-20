@@ -29,7 +29,7 @@ public class EMPClient {
 
     final String trackingId;
 
-    private ImcPlaybackArguments entitlement = new ImcPlaybackArguments();
+    private Entitlement entitlement = new Entitlement();
     private EntitlementsEngine entitlementsEngine;
     private final DeviceInfo deviceInfo;
     private String playSessionId;
@@ -107,7 +107,7 @@ public class EMPClient {
         entitlementsEngine.oauthLogin(deviceInfo, accessToken, oauthType, rememberMe);
     }
 
-    ImcPlaybackArguments getEntitlement() {
+    Entitlement getEntitlement() {
         return this.entitlement;
     }
 
@@ -123,23 +123,23 @@ public class EMPClient {
         return empApi.isAnonymous();
     }
 
-    public ImcPlaybackArguments playVod(String assetId) throws Exception {
+    public Entitlement playVod(String assetId) throws Exception {
         return getPlaybackArguments(assetId, null, null, PLAYBACK_MODE_ADAPTIVE);
     }
 
-    public ImcPlaybackArguments playLive(String channelId) throws Exception {
+    public Entitlement playLive(String channelId) throws Exception {
         return getPlaybackArguments(null, channelId, null, PLAYBACK_MODE_LIVE);
     }
 
-    public ImcPlaybackArguments playCatchup(String channelId, String programId) throws Exception {
+    public Entitlement playCatchup(String channelId, String programId) throws Exception {
         return getPlaybackArguments(null, channelId, programId, PLAYBACK_MODE_ADAPTIVE);
     }
 
-    public ImcPlaybackArguments playDownloadedAsset(String assetId) throws Exception {
+    public Entitlement playDownloadedAsset(String assetId) throws Exception {
         return getPlaybackArguments(assetId, null, null, PLAYBACK_MODE_OFFLINE);
     }
 
-    private ImcPlaybackArguments getPlaybackArguments(String assetId, String channelId, String programId, int type) throws Exception {
+    private Entitlement getPlaybackArguments(String assetId, String channelId, String programId, int type) throws Exception {
         try {
             // EMP-9784 Android - Enforce authorisation token for playback
             // The purpose to check authentication, because both client and backend need to know accountId.

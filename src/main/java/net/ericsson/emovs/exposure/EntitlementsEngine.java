@@ -224,8 +224,8 @@ public class EntitlementsEngine {
         return authenticateOauth(makeOAuthRequest(device, accessToken, oauthType, rememberMe));
     }
     
-    private ImcPlaybackArguments getEntitlementResponse(String assetId, String channelId, String programId, JSONObject jsonObject) throws JSONException {
-        ImcPlaybackArguments response = new ImcPlaybackArguments();
+    private Entitlement getEntitlementResponse(String assetId, String channelId, String programId, JSONObject jsonObject) throws JSONException {
+        Entitlement response = new Entitlement();
         
         response.assetId = assetId;
         response.channelId = channelId;
@@ -266,31 +266,31 @@ public class EntitlementsEngine {
         return response;
     }
     
-    public ImcPlaybackArguments getDownloadToken(String assetId) throws Exception {
+    public Entitlement getDownloadToken(String assetId) throws Exception {
        Logging.d("getDownloadToken assetID: " + assetId);
         
         return getToken(assetId, null, null, "/download/" + assetId);
     }
     
-    public ImcPlaybackArguments getVodPlayToken(String assetId) throws Exception {
+    public Entitlement getVodPlayToken(String assetId) throws Exception {
        Logging.d("getVODPlayToken assetID: " + assetId);
         
         return getToken(assetId, null, null, "/entitlement/" + assetId + "/play");
     }
     
-    public ImcPlaybackArguments getLivePlayToken(String channelId) throws Exception {
+    public Entitlement getLivePlayToken(String channelId) throws Exception {
        Logging.d("getLivePlayToken channelID: " + channelId);
         
         return getToken(null, channelId, null, "/entitlement/channel/" + channelId + "/play");
     }
 
-    public ImcPlaybackArguments getCatchupPlayToken(String channelId, String programId) throws Exception {
+    public Entitlement getCatchupPlayToken(String channelId, String programId) throws Exception {
        Logging.d("getLivePlayToken channelID: " + channelId +"programID: "+programId );
 
         return getToken(null, channelId, programId, "/entitlement/channel/" + channelId + "/program/"+programId +"/play");
     }
 
-    private ImcPlaybackArguments getToken(String assetId, String channelId, String programId, String relativeUrl) throws Exception {
+    private Entitlement getToken(String assetId, String channelId, String programId, String relativeUrl) throws Exception {
         //JSONObject jsonObject = jsonRestClient.post(relativeUrl, makePlayRequestParameters("EDRM", "HLS"));
         JSONObject jsonObject = jsonRestClient.post(relativeUrl, makePlayRequestParameters("CENC", "DASH"));
         return getEntitlementResponse(assetId, channelId, programId, jsonObject);
