@@ -34,8 +34,8 @@ import java.util.Map;
 
 public class EmpPublicApi {
     private static final String TAG = "EmpPublicApi";
-    private static Application app;
     private static RequestQueue mRequestQueue;
+    public static Application app;
     public static String exposureApiUrl = "https://psempexposureapi.ebsd.ericsson.net";
     public static String customerId = "DevGroup";
     public static String businessUnitId = "EnigmaTV";
