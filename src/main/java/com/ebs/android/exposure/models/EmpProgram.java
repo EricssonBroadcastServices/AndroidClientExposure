@@ -1,4 +1,4 @@
-package com.ebs.android.exposure;
+package com.ebs.android.exposure.models;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;

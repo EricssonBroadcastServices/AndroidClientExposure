@@ -38,7 +38,7 @@ public class SharedPropertiesCredentialsStorageTest {
     public void testStoreCredentials() throws Exception {
          Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SharedPropertiesCredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesCredentialsStorage.getInstance(appContext);
+        SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance(appContext);
         sharedPropertiesCredentialsStorage.storeCredentials(API_URL, CUSTOMER, BUSINESS_UNIT, Credentials.fromJSON(new JSONObject(AUTH_RESPONSE)));
 
         assertEquals(API_URL, sharedPropertiesCredentialsStorage.getExposureUrl());
@@ -51,7 +51,7 @@ public class SharedPropertiesCredentialsStorageTest {
     public void testDeleteCredentials() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SharedPropertiesCredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesCredentialsStorage.getInstance(appContext);
+        SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance(appContext);
         sharedPropertiesCredentialsStorage.storeCredentials(API_URL, CUSTOMER, BUSINESS_UNIT, Credentials.fromJSON(new JSONObject(AUTH_RESPONSE)));
 
         sharedPropertiesCredentialsStorage.deleteCredentials();

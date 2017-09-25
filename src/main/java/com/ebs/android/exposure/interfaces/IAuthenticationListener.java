@@ -1,4 +1,4 @@
-package com.ebs.android.exposure;
+package com.ebs.android.exposure.interfaces;
 /*
  * Copyright (c) 2017 Ericsson. All Rights Reserved
  *
@@ -11,8 +11,10 @@ package com.ebs.android.exposure;
  * THE PRODUCT.
  */
 
-import org.json.JSONObject;
+import com.ebs.android.exposure.clients.exposure.ExposureError;
 
-public interface ExposureCallback {
-    void onCallCompleted(JSONObject response, ExposureError error);
+public interface IAuthenticationListener {
+    void onAuthSuccess(String sessionToken);
+    void onAuthError(ExposureError error);
 }
+

@@ -46,38 +46,38 @@ public class EmpPublicApi {
         return null;
     }
 
-    public static void getFeatured(EmpINetworkResult builder) {
+    public static void getFeatured(INetworkResult builder) {
         builder.ok("");
     }
 
 
-    public static void getCarouselGroupById(String carouselGroupId, EmpINetworkResult callback) {
+    public static void getCarouselGroupById(String carouselGroupId, INetworkResult callback) {
         makeRequest(true, baseUrl() + "/carouselgroup/" + carouselGroupId, null, callback);
     }
 
-    public static void getMainJson(EmpINetworkResult callback) {
+    public static void getMainJson(INetworkResult callback) {
         makeRequest(true, baseUrl() + "/config/main.json", null, callback);
     }
 
-    public static void autocomplete(String query, EmpINetworkResult callback) {
+    public static void autocomplete(String query, INetworkResult callback) {
         makeRequest(true, baseUrl() + "/content/search/autocomplete/" + query, null, callback);
     }
 
-    public static void validateSession(EmpINetworkResult callback) {
+    public static void validateSession(INetworkResult callback) {
         makeJsonRequest(true, baseUrl() + "/auth/session", null, callback);
     }
 
-    public static void getAssets(String endpoint, EmpINetworkResult builder) {
+    public static void getAssets(String endpoint, INetworkResult builder) {
         String url = baseUrl() + endpoint;
         makeRequestGet(url, null, builder);
     }
 
-    public static void getSeries(EmpINetworkResult builder) {
+    public static void getSeries(INetworkResult builder) {
         String url = baseUrl() + "/content/season?includeEpisodes=true";
         makeRequestGet(url, null, builder);
     }
 
-    public static void getEpg(String channelId, EmpINetworkResult builder) {
+    public static void getEpg(String channelId, INetworkResult builder) {
         long timeBox = 1000 * 60 * 60 * 24 * 2; // 5 days
         long nowMs = System.currentTimeMillis();
         long from = nowMs - timeBox;
@@ -86,12 +86,12 @@ public class EmpPublicApi {
         makeRequestGet(url, null, builder);
     }
 
-    public static void getChannels(EmpINetworkResult empChannelsBuilder) {
+    public static void getChannels(INetworkResult empChannelsBuilder) {
         String url = baseUrl() + "/content/asset" + "?fieldSet=ALL&&includeUserData=true&pageNumber=1&sort=originalTitle&pageSize=100&onlyPublished=true&assetType=TV_CHANNEL";
         makeRequestGet(url, null, empChannelsBuilder);
     }
 
-    public static void login(DeviceInfo device, String username, String password, String mfaCode, EmpINetworkResult callback) {
+    public static void login(DeviceInfo device, String username, String password, String mfaCode, INetworkResult callback) {
         boolean is2factor = mfaCode != null && !mfaCode.equals("");
         String endpoint = is2factor ? "/auth/twofactorlogin" : "/auth/login";
         JSONObject params = new JSONObject();
@@ -112,15 +112,15 @@ public class EmpPublicApi {
         makeJsonRequest(false, baseUrl() + endpoint, params, callback);
     }
 
-    private static void makeRequestGet(String url, final HashMap<String, String> params, final EmpINetworkResult result) {
+    private static void makeRequestGet(String url, final HashMap<String, String> params, final INetworkResult result) {
         makeRequest(true, url, params, result);
     }
 
-    private static void makeRequestPost(String url, final HashMap<String, String> params, final EmpINetworkResult result) {
+    private static void makeRequestPost(String url, final HashMap<String, String> params, final INetworkResult result) {
         makeRequest(false, url, params, result);
     }
 
-    private static void makeRequest(boolean isGet, String url, final HashMap<String, String> params, final EmpINetworkResult result) {
+    private static void makeRequest(boolean isGet, String url, final HashMap<String, String> params, final INetworkResult result) {
         VolleyLog.DEBUG = true;
         StringRequest strReq1 = new StringRequest(isGet ? Request.Method.GET : Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -169,11 +169,11 @@ public class EmpPublicApi {
             }
         };
 
-        Log.d("Login Request: ", strReq1.toString());
+        Log.d("login Request: ", strReq1.toString());
         addToRequestQueue(strReq1, "");
     }
 
-    private static void makeJsonRequest(boolean isGet, String url, JSONObject params, final EmpINetworkResult result) {
+    private static void makeJsonRequest(boolean isGet, String url, JSONObject params, final INetworkResult result) {
         VolleyLog.DEBUG = true;
         JsonObjectRequest strReq1 = new JsonObjectRequest(isGet ? Request.Method.GET : Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
             @Override
@@ -214,7 +214,7 @@ public class EmpPublicApi {
             }
         };
 
-        Log.d("Login Request: ", strReq1.toString());
+        Log.d("login Request: ", strReq1.toString());
         addToRequestQueue(strReq1, "");
     }
 

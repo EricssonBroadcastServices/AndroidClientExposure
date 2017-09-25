@@ -1,10 +1,10 @@
-package com.ebs.android.exposure;
+package com.ebs.android.exposure.models;
 
 
 import net.ericsson.emovs.exposure.Entitlement;
 
 /**
- * Created by Benjamin on 2017-09-07.
+ * Created by Joao Coelho on 2017-09-07.
  */
 
 public class EmpOfflineAsset extends EmpAsset {

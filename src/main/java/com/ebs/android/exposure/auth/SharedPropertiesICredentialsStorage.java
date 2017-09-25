@@ -15,11 +15,13 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.ebs.android.exposure.interfaces.ICredentialsStorageProvider;
+
 import org.json.JSONObject;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class SharedPropertiesCredentialsStorage implements CredentialsStorageProvider {
+public class SharedPropertiesICredentialsStorage implements ICredentialsStorageProvider {
     private static final String TAG = "EMPCredentialsProvider";
 
     private static final String API_URL = "api";
@@ -31,15 +33,15 @@ public class SharedPropertiesCredentialsStorage implements CredentialsStoragePro
     private Credentials mCredentials;
 
     private static class CredentialsStoreHolder {
-        private final static SharedPropertiesCredentialsStorage sInstance = new SharedPropertiesCredentialsStorage();
+        private final static SharedPropertiesICredentialsStorage sInstance = new SharedPropertiesICredentialsStorage();
     }
 
-    public static SharedPropertiesCredentialsStorage getInstance(Context context) {
+    public static SharedPropertiesICredentialsStorage getInstance(Context context) {
         CredentialsStoreHolder.sInstance.setApplicationContext(context.getApplicationContext());
         return CredentialsStoreHolder.sInstance;
     }
 
-    private SharedPropertiesCredentialsStorage() {
+    private SharedPropertiesICredentialsStorage() {
     }
 
     private void setApplicationContext(Context applicationContext) {

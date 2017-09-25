@@ -180,7 +180,7 @@ public class EntitlementsEngine {
             setAccountStatus(status);
         }
         else {
-           Logging.e("Authentication failed for Facebook user" );
+           Logging.e("Authentication failed for facebook user" );
         }
 
         return json;

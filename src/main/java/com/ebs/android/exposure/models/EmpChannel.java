@@ -1,4 +1,4 @@
-package com.ebs.android.exposure;
+package com.ebs.android.exposure.models;
 
 import com.ebs.android.exposure.interfaces.IPlayable;
 

@@ -1,4 +1,4 @@
-package com.ebs.android.exposure;
+package com.ebs.android.exposure.clients.exposure;
 /*
  * Copyright (c) 2017 Ericsson. All Rights Reserved
  *

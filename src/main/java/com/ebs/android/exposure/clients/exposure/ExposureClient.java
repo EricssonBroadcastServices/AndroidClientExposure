@@ -1,4 +1,4 @@
-package com.ebs.android.exposure;
+package com.ebs.android.exposure.clients.exposure;
 /*
  * Copyright (c) 2017 Ericsson. All Rights Reserved
  *
@@ -15,10 +15,8 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
-import net.ericsson.emovs.exposure.Entitlement;
+import com.ebs.android.exposure.interfaces.IExposureCallback;
 
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +30,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class ExposureClient {
     private final static String TAG = "ExposureClient";
@@ -120,7 +117,7 @@ public class ExposureClient {
         return connection;
     }
 
-    public void postAsync(String url, JSONObject body, ExposureCallback callback) {
+    public void postAsync(String url, JSONObject body, IExposureCallback callback) {
         try {
             URL apiUrl = new URL(getApiUrl(), url);
             HttpURLConnection connection = getHttpURLConnection(apiUrl);
@@ -136,7 +133,7 @@ public class ExposureClient {
         }
     }
 
-    public void deleteAsync(String url, ExposureCallback callback) {
+    public void deleteAsync(String url, IExposureCallback callback) {
         try {
             URL apiUrl = new URL(getApiUrl(), url);
             HttpURLConnection connection = getHttpURLConnection(apiUrl);
@@ -157,9 +154,9 @@ public class ExposureClient {
 
         private final HttpURLConnection mURLConnection;
         private final JSONObject mBody;
-        private final ExposureCallback mCallback;
+        private final IExposureCallback mCallback;
 
-        HttpAsyncTask(HttpURLConnection connection, JSONObject body, ExposureCallback callback) {
+        HttpAsyncTask(HttpURLConnection connection, JSONObject body, IExposureCallback callback) {
             mURLConnection = connection;
             mBody = body;
             if(mURLConnection.getDoOutput() && null == mBody) {

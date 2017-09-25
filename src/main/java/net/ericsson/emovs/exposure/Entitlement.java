@@ -1,6 +1,8 @@
 package net.ericsson.emovs.exposure;
 
-public class Entitlement {
+import java.io.Serializable;
+
+public class Entitlement implements Serializable {
     public String assetId;
     public String channelId;
     public String programId;

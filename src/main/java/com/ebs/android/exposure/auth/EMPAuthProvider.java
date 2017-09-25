@@ -13,9 +13,11 @@ package com.ebs.android.exposure.auth;/*
 import android.content.Context;
 import android.util.Log;
 
-import com.ebs.android.exposure.ExposureCallback;
-import com.ebs.android.exposure.ExposureClient;
-import com.ebs.android.exposure.ExposureError;
+import com.ebs.android.exposure.interfaces.IExposureCallback;
+import com.ebs.android.exposure.clients.exposure.ExposureClient;
+import com.ebs.android.exposure.clients.exposure.ExposureError;
+import com.ebs.android.exposure.interfaces.IAuthenticationListener;
+import com.ebs.android.exposure.interfaces.ICredentialsStorageProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,10 +27,10 @@ import java.text.ParseException;
 public class EMPAuthProvider {
     private static final String TAG = "EMPAuthProvider";
 
-    private Context mApplicationContext;
-    private CredentialsStorageProvider mCredentialsStorageProvider;
+    protected Context mApplicationContext;
+    private ICredentialsStorageProvider mICredentialsStorageProvider;
 
-    private Credentials mCredentials = null;
+    protected Credentials mCredentials = null;
 
     private static class EmpAuthProviderHolder {
         private final static EMPAuthProvider sInstance = new EMPAuthProvider();
@@ -39,15 +41,15 @@ public class EMPAuthProvider {
         return EmpAuthProviderHolder.sInstance;
     }
 
-    private EMPAuthProvider() {
+    protected EMPAuthProvider() {
     }
 
-    private void setApplicationContext(Context applicationContext) {
+    protected void setApplicationContext(Context applicationContext) {
         mApplicationContext = applicationContext;
     }
 
-    public void setCredentialsStore(CredentialsStorageProvider storageProvider) {
-        mCredentialsStorageProvider = storageProvider;
+    public void setCredentialsStore(ICredentialsStorageProvider storageProvider) {
+        mICredentialsStorageProvider = storageProvider;
         mCredentials = storageProvider.getCredentials();
 
         if (null != mCredentials) {
@@ -63,7 +65,7 @@ public class EMPAuthProvider {
         return null != mCredentials;
     }
 
-    private void parseAuthResponse(final AuthenticationListener listener,
+    private void parseAuthResponse(final IAuthenticationListener listener,
                                      final JSONObject response,
                                      final ExposureError error) {
         if (null != error) {
@@ -76,10 +78,10 @@ public class EMPAuthProvider {
         try {
             mCredentials = Credentials.fromJSON(response);
 
-            if (null != mCredentialsStorageProvider) {
+            if (null != mICredentialsStorageProvider) {
                 ExposureClient exposureClient = ExposureClient.getInstance();
                 exposureClient.setSessionToken(mCredentials.getSessionToken());
-                mCredentialsStorageProvider.storeCredentials(exposureClient.getExposureUrl(),
+                mICredentialsStorageProvider.storeCredentials(exposureClient.getExposureUrl(),
                         exposureClient.getCustomer(), exposureClient.getBusinessUnit(), mCredentials);
             }
 
@@ -95,7 +97,7 @@ public class EMPAuthProvider {
         }
     }
 
-    public void Anonymous(final AuthenticationListener listener) {
+    public void anonymous(final IAuthenticationListener listener) {
         final String path = "auth/anonymous";
 
         try {
@@ -103,25 +105,25 @@ public class EMPAuthProvider {
                     .put("deviceId", DeviceInfo.getInstance(mApplicationContext).getDeviceId())
                     .put("device", DeviceInfo.getInstance(mApplicationContext).getDeviceInfo());
 
-            ExposureClient.getInstance().postAsync(path, authRequest, new ExposureCallback() {
+            ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
                 public void onCallCompleted(JSONObject response, ExposureError error) {
                     parseAuthResponse(listener, response, error);
                 }
             });
         } catch (JSONException e0) {
-            Log.e(TAG, "Anonymous authentication error", e0);
+            Log.e(TAG, "anonymous authentication error", e0);
             if(null != listener) {
                 listener.onAuthError(ExposureError.INVALID_JSON);
             }
         }
     }
 
-    public void Login(String username, String password, final AuthenticationListener listener) {
-        Login(true, username, password, listener);
+    public void login(String username, String password, final IAuthenticationListener listener) {
+        login(true, username, password, listener);
     }
 
-    public void Login(final Boolean persistent, final String username, final String password, final AuthenticationListener listener) {
+    public void login(final Boolean persistent, final String username, final String password, final IAuthenticationListener listener) {
         final String path = "auth/login";
 
         try {
@@ -132,7 +134,7 @@ public class EMPAuthProvider {
                     .put("username", username)
                     .put("password", password);
 
-            ExposureClient.getInstance().postAsync(path, authRequest, new ExposureCallback() {
+            ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
                 public void onCallCompleted(JSONObject response, ExposureError error) {
                     parseAuthResponse(listener, response, error);
@@ -146,11 +148,11 @@ public class EMPAuthProvider {
         }
     }
 
-    public void OAuthLogin(final String accessToken, final String type, final AuthenticationListener listener) {
-        OAuthLogin(true, accessToken, type, listener);
+    public void oAuthLogin(final String accessToken, final String type, final IAuthenticationListener listener) {
+        oAuthLogin(true, accessToken, type, listener);
     }
 
-    public void OAuthLogin(final Boolean persistent, final String accessToken, final String type, final AuthenticationListener listener) {
+    public void oAuthLogin(final Boolean persistent, final String accessToken, final String type, final IAuthenticationListener listener) {
         final String path = "auth/oauthLogin";
 
         try {
@@ -161,7 +163,7 @@ public class EMPAuthProvider {
                     .put("accessToken", accessToken)
                     .put("type", type);
 
-            ExposureClient.getInstance().postAsync(path, authRequest, new ExposureCallback() {
+            ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
                 public void onCallCompleted(JSONObject response, ExposureError error) {
                     parseAuthResponse(listener, response, error);
@@ -175,11 +177,11 @@ public class EMPAuthProvider {
         }
     }
 
-    public void Facebook(final String accessToken, final AuthenticationListener listener) {
-        Facebook(true, accessToken, listener);
+    public void facebook(final String accessToken, final IAuthenticationListener listener) {
+        facebook(true, accessToken, listener);
     }
 
-    public void Facebook(final Boolean persistent, final String accessToken, final AuthenticationListener listener) {
+    public void facebook(final Boolean persistent, final String accessToken, final IAuthenticationListener listener) {
         final String path = "auth/facebookLogin";
 
         try {
@@ -189,7 +191,7 @@ public class EMPAuthProvider {
                     .put("rememberMe", persistent)
                     .put("accessToken", accessToken);
 
-            ExposureClient.getInstance().postAsync(path, authRequest, new ExposureCallback() {
+            ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
                 public void onCallCompleted(JSONObject response, ExposureError error) {
                     parseAuthResponse(listener, response, error);
@@ -203,13 +205,13 @@ public class EMPAuthProvider {
         }
     }
 
-    public void CheckPassword(final String password, final AuthenticationListener listener) {
+    public void checkPassword(final String password, final IAuthenticationListener listener) {
         final String path = "auth/credentials";
 
         try {
             JSONObject authRequest = new JSONObject().put("password", password);
 
-            ExposureClient.getInstance().postAsync(path, authRequest, new ExposureCallback() {
+            ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
                 public void onCallCompleted(JSONObject response, ExposureError error) {
                     if (null != error) {
@@ -245,7 +247,7 @@ public class EMPAuthProvider {
         }
     }
 
-    public void CrmSession(final String crmToken, final AuthenticationListener listener) {
+    public void crmSession(final String crmToken, final IAuthenticationListener listener) {
         final String path = "auth/crmSession";
 
         try {
@@ -254,7 +256,7 @@ public class EMPAuthProvider {
                     .put("device", DeviceInfo.getInstance(mApplicationContext).getDeviceInfo())
                     .put("crmToken", crmToken);
 
-            ExposureClient.getInstance().postAsync(path, authRequest, new ExposureCallback() {
+            ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
                 public void onCallCompleted(JSONObject response, ExposureError error) {
                     parseAuthResponse(listener, response, error);
@@ -268,11 +270,10 @@ public class EMPAuthProvider {
         }
     }
 
-    public void CheckAuth(final AuthenticationListener listener) {
+    public void checkAuth(final IAuthenticationListener listener) {
         final String path = "auth/session";
-
         if (isAuthenticated()){
-//TODO
+            listener.onAuthSuccess(null);
         } else {
             if (null != listener) {
                 listener.onAuthError(ExposureError.NO_SESSION_TOKEN);
@@ -280,26 +281,26 @@ public class EMPAuthProvider {
         }
     }
 
-    public void Logout() {
+    public void logout() {
         Log.d(TAG, "Request logout");
         final String path = "auth/session";
 
         if (isAuthenticated()){
-            ExposureClient.getInstance().deleteAsync(path, new ExposureCallback() {
+            ExposureClient.getInstance().deleteAsync(path, new IExposureCallback() {
                 @Override
                 public void onCallCompleted(JSONObject response, ExposureError error) {
                     ExposureClient.getInstance().setSessionToken("");
                     if (null != error) {
-                        Log.e(TAG, "Logout error:" + error.toString());
+                        Log.e(TAG, "logout error:" + error.toString());
                     } else {
-                        Log.d(TAG, "Logout successful");
+                        Log.d(TAG, "logout successful");
                     }
                 }
             });
 
             mCredentials = null;
-            if (null != mCredentialsStorageProvider) {
-                mCredentialsStorageProvider.deleteCredentials();
+            if (null != mICredentialsStorageProvider) {
+                mICredentialsStorageProvider.deleteCredentials();
             }
         }
     }

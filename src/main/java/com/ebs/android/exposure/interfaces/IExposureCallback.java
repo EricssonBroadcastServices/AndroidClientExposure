@@ -1,4 +1,4 @@
-package com.ebs.android.exposure.auth;
+package com.ebs.android.exposure.interfaces;
 /*
  * Copyright (c) 2017 Ericsson. All Rights Reserved
  *
@@ -11,11 +11,10 @@ package com.ebs.android.exposure.auth;
  * THE PRODUCT.
  */
 
-public interface CredentialsStorageProvider {
-    Credentials getCredentials();
-    String getExposureUrl();
-    String getCustomer();
-    String getBusinessUnit();
-    void storeCredentials(String exposureUrl, String customer, String businessUnit, Credentials credentials);
-    void deleteCredentials();
+import com.ebs.android.exposure.clients.exposure.ExposureError;
+
+import org.json.JSONObject;
+
+public interface IExposureCallback {
+    void onCallCompleted(JSONObject response, ExposureError error);
 }
