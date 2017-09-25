@@ -119,7 +119,7 @@ public class ExposureClient {
 
     public void postAsync(String url, JSONObject body, IExposureCallback callback) {
         try {
-            URL apiUrl = new URL(getApiUrl(), url);
+            URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
             HttpURLConnection connection = getHttpURLConnection(apiUrl);
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);

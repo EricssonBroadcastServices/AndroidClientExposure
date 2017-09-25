@@ -31,13 +31,14 @@ public class SharedPropertiesICredentialsStorage implements ICredentialsStorageP
 
     private SharedPreferences mSharedPreferences;
     private Credentials mCredentials;
+    private Context mContext;
 
     private static class CredentialsStoreHolder {
         private final static SharedPropertiesICredentialsStorage sInstance = new SharedPropertiesICredentialsStorage();
     }
 
     public static SharedPropertiesICredentialsStorage getInstance(Context context) {
-        CredentialsStoreHolder.sInstance.setApplicationContext(context.getApplicationContext());
+        CredentialsStoreHolder.sInstance.setApplicationContext(context);
         return CredentialsStoreHolder.sInstance;
     }
 
@@ -45,7 +46,12 @@ public class SharedPropertiesICredentialsStorage implements ICredentialsStorageP
     }
 
     private void setApplicationContext(Context applicationContext) {
-        mSharedPreferences = applicationContext.getSharedPreferences("EMPCredentials", MODE_PRIVATE);
+        mContext = applicationContext;
+        init();
+    }
+
+    public void init() {
+        mSharedPreferences = mContext.getSharedPreferences("EMPCredentials", MODE_PRIVATE);
         String credentials = mSharedPreferences.getString(CREDENTIALS, "");
         if(!TextUtils.isEmpty(credentials)) {
             try {
@@ -78,8 +84,11 @@ public class SharedPropertiesICredentialsStorage implements ICredentialsStorageP
         editor.putString(API_URL, exposureUrl);
         editor.putString(CUSTOMER, customer);
         editor.putString(BUSINESS_UNIT, businessUnit);
-        editor.putString(CREDENTIALS, credentials.toString());
-        editor.apply();
+        if (credentials != null) {
+            editor.putString(CREDENTIALS, credentials.toString());
+        }
+        editor.commit();
+        //editor.apply();
         mCredentials = credentials;
     }
 
@@ -90,7 +99,8 @@ public class SharedPropertiesICredentialsStorage implements ICredentialsStorageP
         editor.remove(CUSTOMER);
         editor.remove(BUSINESS_UNIT);
         editor.remove(CREDENTIALS);
-        editor.apply();
+        //editor.apply();
+        editor.commit();
         mCredentials = null;
     }
 }

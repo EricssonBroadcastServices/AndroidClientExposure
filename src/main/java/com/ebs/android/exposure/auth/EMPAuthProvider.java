@@ -37,7 +37,7 @@ public class EMPAuthProvider {
     }
 
     public static EMPAuthProvider getInstance(Context context) {
-        EmpAuthProviderHolder.sInstance.setApplicationContext(context.getApplicationContext());
+        EmpAuthProviderHolder.sInstance.setApplicationContext(context);
         return EmpAuthProviderHolder.sInstance;
     }
 
@@ -51,12 +51,11 @@ public class EMPAuthProvider {
     public void setCredentialsStore(ICredentialsStorageProvider storageProvider) {
         mICredentialsStorageProvider = storageProvider;
         mCredentials = storageProvider.getCredentials();
-
-        if (null != mCredentials) {
-            ExposureClient exposureClient = ExposureClient.getInstance();
-            exposureClient.setExposureUrl(storageProvider.getExposureUrl());
-            exposureClient.setCustomer(storageProvider.getCustomer());
-            exposureClient.setBusinessUnit(storageProvider.getBusinessUnit());
+        ExposureClient exposureClient = ExposureClient.getInstance();
+        exposureClient.setExposureUrl(storageProvider.getExposureUrl());
+        exposureClient.setCustomer(storageProvider.getCustomer());
+        exposureClient.setBusinessUnit(storageProvider.getBusinessUnit());
+        if (mCredentials != null) {
             exposureClient.setSessionToken(mCredentials.getSessionToken());
         }
     }
@@ -120,12 +119,15 @@ public class EMPAuthProvider {
     }
 
     public void login(String username, String password, final IAuthenticationListener listener) {
-        login(true, username, password, listener);
+        login(true, username, password, null, listener);
     }
 
-    public void login(final Boolean persistent, final String username, final String password, final IAuthenticationListener listener) {
-        final String path = "auth/login";
-
+    public void login(final Boolean persistent, final String username, final String password, final String mfaCode, final IAuthenticationListener listener) {
+        boolean is2factor = mfaCode != null && !mfaCode.equals("");
+        String path = "auth/login";
+        if (is2factor) {
+            path = "/auth/twofactorlogin";
+        }
         try {
             JSONObject authRequest = new JSONObject()
                     .put("deviceId", DeviceInfo.getInstance(mApplicationContext).getDeviceId())
@@ -133,6 +135,9 @@ public class EMPAuthProvider {
                     .put("rememberMe", persistent)
                     .put("username", username)
                     .put("password", password);
+            if(is2factor) {
+                authRequest.put("totp", mfaCode);
+            }
 
             ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
