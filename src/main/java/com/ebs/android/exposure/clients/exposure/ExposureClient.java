@@ -12,6 +12,7 @@ package com.ebs.android.exposure.clients.exposure;
  */
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -124,7 +125,13 @@ public class ExposureClient {
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
-            new HttpAsyncTask(connection, body, callback).execute();
+            HttpAsyncTask task = new HttpAsyncTask(connection, body, callback);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                task.execute();
+
         } catch (IOException e) {
             Log.e(TAG, "POST error", e);
             if (null != callback) {
@@ -140,7 +147,12 @@ public class ExposureClient {
             connection.setRequestMethod("DELETE");
             connection.setDoOutput(false);
 
-            new HttpAsyncTask(connection, null, callback).execute();
+            HttpAsyncTask task = new HttpAsyncTask(connection, null, callback);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                task.execute();
         } catch (IOException e) {
             Log.e(TAG, "DELETE error", e);
             if (null != callback) {
