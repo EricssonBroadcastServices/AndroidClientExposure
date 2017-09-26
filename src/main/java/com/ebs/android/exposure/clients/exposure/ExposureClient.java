@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.ebs.android.exposure.interfaces.IExposureCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -118,6 +119,28 @@ public class ExposureClient {
         return connection;
     }
 
+    public void getAsync(String url, IExposureCallback callback) {
+        try {
+            URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
+            HttpURLConnection connection = getHttpURLConnection(apiUrl);
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(false);
+
+            HttpAsyncTask task = new HttpAsyncTask(connection, null, callback);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                task.execute();
+
+        } catch (IOException e) {
+            Log.e(TAG, "GET error", e);
+            if (null != callback) {
+                callback.onCallCompleted(null, ExposureError.NETWORK_ERROR);
+            }
+        }
+    }
+
     public void postAsync(String url, JSONObject body, IExposureCallback callback) {
         try {
             URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
@@ -190,7 +213,9 @@ public class ExposureClient {
                     try {
                         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                         try {
-                            writer.write(mBody.toString());
+                            if (mBody != null) {
+                                writer.write(mBody.toString());
+                            }
                         } catch (Exception ex) {
                             Log.e(TAG, "[" + this.hashCode() + "] Network error", ex);
                         } finally {
@@ -238,7 +263,13 @@ public class ExposureClient {
                         }
                     }
 
-                    response.responseBody = new JSONObject(strResponse.toString());
+                    try {
+                        response.responseBody = new JSONObject(strResponse.toString());
+                    }
+                    catch(Exception e) {
+                        JSONArray responseArray = new JSONArray(strResponse.toString());
+                        response.responseBody = new JSONObject().put("items", responseArray);
+                    }
                 }
 
                 Log.d(TAG, "[" + this.hashCode() + "] " + response.responseCode + " " + response.responseBody);

@@ -2,8 +2,6 @@ package com.ebs.android.exposure.models;
 
 import com.ebs.android.exposure.interfaces.IPlayable;
 
-import java.io.Serializable;
-
 /**
  * Created by Joao Coelho on 15/07/2017.
  */

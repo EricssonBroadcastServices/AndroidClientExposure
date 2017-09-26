@@ -13,21 +13,13 @@ package com.ebs.android.exposure.entitlements;/*
 import android.content.Context;
 import android.util.Log;
 
-import com.ebs.android.exposure.auth.Credentials;
-import com.ebs.android.exposure.auth.DeviceInfo;
 import com.ebs.android.exposure.clients.exposure.ExposureClient;
 import com.ebs.android.exposure.clients.exposure.ExposureError;
-import com.ebs.android.exposure.interfaces.IAuthenticationListener;
-import com.ebs.android.exposure.interfaces.ICredentialsStorageProvider;
 import com.ebs.android.exposure.interfaces.IEntitlementCallback;
 import com.ebs.android.exposure.interfaces.IExposureCallback;
 
-import net.ericsson.emovs.exposure.INetworkResult;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.ParseException;
 
 import static java.util.UUID.randomUUID;
 
