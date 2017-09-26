@@ -278,6 +278,9 @@ public class EMPAuthProvider {
     public void checkAuth(final IAuthenticationListener listener) {
         final String path = "auth/session";
         if (isAuthenticated()){
+            //TODO: make the actual exposure call
+            ExposureClient exposureClient = ExposureClient.getInstance();
+            exposureClient.setSessionToken(mCredentials.getSessionToken());
             listener.onAuthSuccess(null);
         } else {
             if (null != listener) {

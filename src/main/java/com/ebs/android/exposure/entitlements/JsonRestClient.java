@@ -1,4 +1,4 @@
-package net.ericsson.emovs.exposure;
+package com.ebs.android.exposure.entitlements;
 
 import net.ericsson.emovs.utilities.Logging;
 import net.ericsson.emovs.utilities.ResponseCode;

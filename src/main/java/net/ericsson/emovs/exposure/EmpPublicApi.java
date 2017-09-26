@@ -19,6 +19,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ebs.android.exposure.models.EmpCustomer;
 
 import net.ericsson.emovs.utilities.DeviceInfo;
 

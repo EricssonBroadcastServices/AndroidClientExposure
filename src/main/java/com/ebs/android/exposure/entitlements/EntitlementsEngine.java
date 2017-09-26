@@ -1,4 +1,7 @@
-package net.ericsson.emovs.exposure;
+package com.ebs.android.exposure.entitlements;
+
+import com.ebs.android.exposure.entitlements.Entitlement;
+import com.ebs.android.exposure.entitlements.JsonRestClient;
 
 import net.ericsson.emovs.utilities.DeviceInfo;
 import net.ericsson.emovs.utilities.Logging;
@@ -18,50 +21,6 @@ public class EntitlementsEngine {
     
     public EntitlementsEngine(JsonRestClient restClient) {
         this.jsonRestClient = restClient;
-    }
-
-    private JSONObject makeAuthRequest(DeviceInfo device, String userName, String password, boolean rememberMe, String mfaCode) {
-        JSONObject params = new JSONObject();
-
-        try {
-            JSONObject deviceJson = makeDeviceJson(device);
-
-            params.put("device", deviceJson);
-            params.put("deviceId", device.deviceId);
-            params.put("rememberMe", rememberMe);
-            params.put("username", userName);
-            params.put("password", password);
-            if(mfaCode != null && !mfaCode.isEmpty()) {
-                params.put("totp", mfaCode);
-            }
-            return params;
-        } catch (JSONException e) {
-            Logging.e("JSON Exception building Auth Request:" + e);
-            return null;
-        }
-    }
-
-    private JSONObject makeAnonymousAuthRequest(DeviceInfo device) throws JSONException {
-        return new JSONObject()
-                .put("deviceId", device.deviceId)
-                .put("device", makeDeviceJson(device));
-    }
-
-    private JSONObject makeFacebookAuthRequest(DeviceInfo device, String accessToken, boolean rememberMe) throws JSONException {
-        return new JSONObject()
-                .put("deviceId", device.deviceId)
-                .put("rememberMe", rememberMe)
-                .put("device", makeDeviceJson(device))
-                .put("accessToken", accessToken);
-    }
-
-    private JSONObject makeOAuthRequest(DeviceInfo device, String accessToken, String oauthType, boolean rememberMe) throws JSONException {
-        return new JSONObject()
-                .put("deviceId", device.deviceId)
-                .put("rememberMe", rememberMe)
-                .put("device", makeDeviceJson(device))
-                .put("accessToken", accessToken)
-                .put("type", oauthType);
     }
 
     private JSONObject makeDeviceJson(DeviceInfo device) throws JSONException {
@@ -126,104 +85,6 @@ public class EntitlementsEngine {
         }
     }
 
-    private JSONObject authenticate(JSONObject authData) throws Exception {
-
-        String endpoint = authData.has("totp") ? "/auth/twofactorlogin" : "/auth/login";
-        JSONObject json = jsonRestClient.post(endpoint, authData);
-
-        String sessionToken = json.getString("sessionToken");
-        if (sessionToken != null && !sessionToken.isEmpty()) {
-            jsonRestClient.setSessionToken(sessionToken);
-        } else {
-            Logging.e("Authentication failed for anonymous user" );
-        }
-
-        String status = json.getString("accountStatus");
-        if (status != null) {
-            setAccountStatus(status);
-        }
-        else {
-            String username = authData.optString("username", "[anonymous user]");
-           Logging.e("Authentication failed for " + username);
-        }
-        
-        return json;
-    }
-
-    private JSONObject authenticateAnonymous(JSONObject authData) throws Exception {
-
-        JSONObject json = jsonRestClient.post("/auth/anonymous", authData);
-
-        String sessionToken = json.getString("sessionToken");
-        if (sessionToken != null && !sessionToken.isEmpty()) {
-            jsonRestClient.setSessionToken(sessionToken);
-        } else {
-            Logging.e("Authentication failed for anonymous user" );
-        }
-
-        return json;
-    }
-
-    private JSONObject authenticateFacebook(JSONObject authData) throws Exception {
-
-        JSONObject json = jsonRestClient.post("/auth/facebookLogin", authData);
-
-        String sessionToken = json.getString("sessionToken");
-        if (sessionToken != null && !sessionToken.isEmpty()) {
-            jsonRestClient.setSessionToken(sessionToken);
-        } else {
-            Logging.e("Authentication failed for anonymous user" );
-        }
-
-        String status = json.getString("accountStatus");
-        if (status != null) {
-            setAccountStatus(status);
-        }
-        else {
-           Logging.e("Authentication failed for facebook user" );
-        }
-
-        return json;
-    }
-
-    private JSONObject authenticateOauth(JSONObject authData) throws Exception {
-
-        JSONObject json = jsonRestClient.post("/auth/oauthLogin", authData);
-
-        String sessionToken = json.getString("sessionToken");
-        if (sessionToken != null && !sessionToken.isEmpty()) {
-            jsonRestClient.setSessionToken(sessionToken);
-        } else {
-            Logging.e("Authentication failed for anonymous user" );
-        }
-
-        String status = json.getString("accountStatus");
-        if (status != null) {
-            setAccountStatus(status);
-        }
-        else {
-           Logging.e("Authentication failed for oauth user" );
-        }
-
-        return json;
-    }
-
-    public JSONObject authenticateLogin(DeviceInfo device, String userName, String password, boolean rememberMe, String mfaCode) throws Exception {
-        return authenticate(makeAuthRequest(device, userName, password, rememberMe, mfaCode));
-    }
-    
-    public JSONObject anonymousLogin(DeviceInfo device) throws Exception {
-        return authenticateAnonymous(makeAnonymousAuthRequest(device));
-    }
-
-    public JSONObject facebookLogin(DeviceInfo device, String accessToken, boolean rememberMe) throws Exception {
-        return authenticateFacebook(makeFacebookAuthRequest(device, accessToken, rememberMe));
-    }
-
-    public JSONObject oauthLogin(DeviceInfo device, String accessToken, String oauthType, boolean rememberMe) throws Exception {
-        return authenticateOauth(makeOAuthRequest(device, accessToken, oauthType, rememberMe));
-    }
-    
     private Entitlement getEntitlementResponse(String assetId, String channelId, String programId, JSONObject jsonObject) throws JSONException {
         Entitlement response = new Entitlement();
         

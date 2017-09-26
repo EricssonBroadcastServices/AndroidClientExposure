@@ -1,7 +1,7 @@
 package com.ebs.android.exposure.models;
 
 
-import net.ericsson.emovs.exposure.Entitlement;
+import com.ebs.android.exposure.entitlements.Entitlement;
 
 /**
  * Created by Joao Coelho on 2017-09-07.

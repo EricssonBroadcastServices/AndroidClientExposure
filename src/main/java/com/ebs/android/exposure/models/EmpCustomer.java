@@ -1,4 +1,4 @@
-package net.ericsson.emovs.exposure;
+package com.ebs.android.exposure.models;
 
 /**
  * Created by Joao Coelho on 15/07/2017.
