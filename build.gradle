@@ -36,6 +36,10 @@ dependencies {
 }
 
 ext {
-    releaseArtifact = 'emp2-exposure'
+    releaseArtifact = 'fluxplayer-exposure'
+    releaseVersion = 'v2.0.0'
     releaseDescription = 'The EMP Player library exposure module.'
 }
+
+
+apply from: '../../javadoc.gradle'
