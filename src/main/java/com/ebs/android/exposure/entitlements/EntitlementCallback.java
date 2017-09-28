@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.ebs.android.exposure.clients.exposure.ExposureError;
 import com.ebs.android.exposure.interfaces.IEntitlementCallback;
+import com.ebs.android.utilities.ErrorCodes;
+import com.ebs.android.utilities.ErrorRunnable;
 import com.ebs.android.utilities.RunnableThread;
 
 /**
@@ -15,12 +17,14 @@ public class EntitlementCallback implements IEntitlementCallback {
     String channelId;
     String programId;
     EntitledRunnable runnable;
+    ErrorRunnable errorRunnable;
 
-    public EntitlementCallback(String assetId, String channelId, String programId, EntitledRunnable runnable) {
+    public EntitlementCallback(String assetId, String channelId, String programId, EntitledRunnable runnable, ErrorRunnable errorRunnable) {
         this.assetId = assetId;
         this.channelId = channelId;
         this.programId = programId;
         this.runnable = runnable;
+        this.errorRunnable = errorRunnable;
     }
 
     @Override
@@ -32,6 +36,9 @@ public class EntitlementCallback implements IEntitlementCallback {
     @Override
     public void onError(ExposureError error) {
         Log.e("EXO PLAYER ERROR", error.toString());
+        if (errorRunnable != null) {
+            errorRunnable.run(ErrorCodes.EXPOSURE_ENTITLEMENT_ERROR, error.toString());
+        }
     }
 
     @Override
