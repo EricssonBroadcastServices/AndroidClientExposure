@@ -126,7 +126,7 @@ public class ExposureClient {
             connection.setRequestMethod("GET");
             connection.setDoOutput(false);
 
-            HttpAsyncTask task = new HttpAsyncTask(connection, null, callback);
+            HttpTask task = new HttpTask(connection, null, callback);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -141,6 +141,24 @@ public class ExposureClient {
         }
     }
 
+    public void postSync(String url, JSONObject body, IExposureCallback callback) {
+        try {
+            URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
+            HttpURLConnection connection = getHttpURLConnection(apiUrl);
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+
+            HttpTask task = new HttpTask(connection, body, callback);
+            task.processSync();
+        }
+        catch (IOException e) {
+            Log.e(TAG, "POST error", e);
+            if (null != callback) {
+                callback.onCallCompleted(null, ExposureError.NETWORK_ERROR);
+            }
+        }
+    }
+
     public void postAsync(String url, JSONObject body, IExposureCallback callback) {
         try {
             URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
@@ -148,7 +166,7 @@ public class ExposureClient {
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
-            HttpAsyncTask task = new HttpAsyncTask(connection, body, callback);
+            HttpTask task = new HttpTask(connection, body, callback);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -170,7 +188,7 @@ public class ExposureClient {
             connection.setRequestMethod("DELETE");
             connection.setDoOutput(false);
 
-            HttpAsyncTask task = new HttpAsyncTask(connection, null, callback);
+            HttpTask task = new HttpTask(connection, null, callback);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -184,14 +202,14 @@ public class ExposureClient {
         }
     }
 
-    private class HttpAsyncTask extends AsyncTask<Void, Void, ExposureResponse> {
-        private final static String TAG = "HttpAsyncTask";
+    private class HttpTask extends AsyncTask<Void, Void, ExposureResponse> {
+        private final static String TAG = "HttpTask";
 
         private final HttpURLConnection mURLConnection;
         private final JSONObject mBody;
         private final IExposureCallback mCallback;
 
-        HttpAsyncTask(HttpURLConnection connection, JSONObject body, IExposureCallback callback) {
+        HttpTask(HttpURLConnection connection, JSONObject body, IExposureCallback callback) {
             mURLConnection = connection;
             mBody = body;
             if(mURLConnection.getDoOutput() && null == mBody) {
@@ -200,9 +218,12 @@ public class ExposureClient {
             mCallback = callback;
         }
 
-        @Override
-        protected ExposureResponse doInBackground(Void... params) {
+        public void processSync() {
+            ExposureResponse response = process();
+            onPostExecute(response);
+        }
 
+        protected ExposureResponse process() {
             Log.d(TAG, "[" + this.hashCode() + "] " + mURLConnection.getRequestMethod() + " " + mURLConnection.getURL().toString());
             ExposureResponse response = new ExposureResponse();
             try {
@@ -271,13 +292,16 @@ public class ExposureClient {
                         response.responseBody = new JSONObject().put("items", responseArray);
                     }
                 }
-
                 Log.d(TAG, "[" + this.hashCode() + "] " + response.responseCode + " " + response.responseBody);
             } catch (Exception ex) {
                 Log.e(TAG, "[" + this.hashCode() + "] Network error", ex);
             }
-
             return response;
+        }
+
+        @Override
+        protected ExposureResponse doInBackground(Void... params) {
+            return process();
         }
 
         @Override

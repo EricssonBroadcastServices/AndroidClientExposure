@@ -62,6 +62,22 @@ public class DeviceInfo {
         }
     }
 
+    public String getModel() {
+        return Build.MODEL;
+    }
+
+    public String getOS() {
+        return "Android";
+    }
+
+    public String getOSVersion() {
+        return Build.VERSION.RELEASE;
+    }
+
+    public String getManufacturer() {
+        return Build.MANUFACTURER;
+    }
+
     private static boolean diagonalLargerThanSize(double width, double height, double diagonalTreshold) {
         Log.v(TAG, String.format("Width %f\" Height %f\" Diagonal Treshold %f\"",width, height, diagonalTreshold));
         return width*width + height*height > diagonalTreshold*diagonalTreshold;
@@ -75,11 +91,12 @@ public class DeviceInfo {
         JSONObject deviceJSON = new JSONObject();
         deviceJSON.put("height", metrics.heightPixels)
                 .put("width", metrics.widthPixels)
-                .put("model", Build.MODEL)
+                .put("model", getModel())
                 .put("name", "")
-                .put("os", "Android")
-                .put("osVersion", Build.VERSION.RELEASE)
-                .put("manufacturer", Build.MANUFACTURER)
+                .put("os", getOS())
+                .put("osVersion", getOSVersion())
+                .put("manufacturer", getManufacturer())
+                .put("deviceId", getDeviceId())
                 .put("type", isTablet ? "TABLET" : "MOBILE");
 
         return deviceJSON;
