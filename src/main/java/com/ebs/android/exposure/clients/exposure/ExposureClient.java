@@ -144,6 +144,9 @@ public class ExposureClient {
     public void postSync(String url, JSONObject body, IExposureCallback callback) {
         try {
             URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
+            if (url.contains("eventsink")) {
+                apiUrl = new URL(getApiUrl(), (url.startsWith("/") ? url : "/" + url));
+            }
             HttpURLConnection connection = getHttpURLConnection(apiUrl);
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
