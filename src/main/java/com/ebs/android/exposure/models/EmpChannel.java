@@ -38,4 +38,7 @@ public class EmpChannel extends IPlayable {
         return 0;
     }
 
+    public String getId() {
+        return "live@" + channelId;
+    }
 }

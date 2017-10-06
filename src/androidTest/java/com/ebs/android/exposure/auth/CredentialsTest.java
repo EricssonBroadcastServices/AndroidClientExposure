@@ -24,15 +24,9 @@ import static org.junit.Assert.*;
  * THE LICENSE STATEMENT AND LIMITED WARRANTY FURNISHED WITH
  * THE PRODUCT.
  */
-@RunWith(AndroidJUnit4.class)
+//@RunWith(AndroidJUnit4.class)
 public class CredentialsTest {
-    private final String AUTH_RESPONSE = "{\n" +
-            "  \"sessionToken\" : \"A29i-4mTJ-AwOK-4yeu-kryc-MGaa-rp|151103182419922|14873|f3a526e0a4ba8010f67ee37224bcc5ab|1487714577459|1487800977000|false|WEB_Thijs987|1n8HfeZvvIWI3b5kneiiDucElMC+lNZVlKCXz9AEon4=\",\n" +
-            "  \"crmToken\" : \"A29i-4mTJ-AwOK-4yeu-kryc-MGaa-rp\",\n" +
-            "  \"accountId\" : \"151103182419922\",\n" +
-            "  \"expirationDateTime\" : \"2017-02-22T22:02:57Z\",\n" +
-            "  \"accountStatus\" : \"Active\"\n" +
-            "}";
+    private final String AUTH_RESPONSE = "{\"sessionToken\":\"CD1X-tiIQ-x7vI-Zcsy-ZHNJ-olBO-6E|160304085954428|48000|cec24d6511aea8b5c3c6a839d4f1d0a4|1507128381911|1507153581000|false|WEB_blixtuser1|Alzhu4LhTd8XoFW6Iz8qUpFHtYUb9UtkPOQ9u7Npclw=\",\"crmToken\":\"CD1X-tiIQ-x7vI-Zcsy-ZHNJ-olBO-6E\",\"accountId\":\"160304085954428\",\"expirationDateTime\":\"2017-10-04T21:46:21.00Z\",\"accountStatus\":\"Active\"}";
 
     private Credentials testCredentials;
 
@@ -43,30 +37,30 @@ public class CredentialsTest {
 
     @Test
     public void getSessionToken() throws Exception {
-        assertEquals("A29i-4mTJ-AwOK-4yeu-kryc-MGaa-rp|151103182419922|14873|f3a526e0a4ba8010f67ee37224bcc5ab|1487714577459|1487800977000|false|WEB_Thijs987|1n8HfeZvvIWI3b5kneiiDucElMC+lNZVlKCXz9AEon4=", testCredentials.getSessionToken());
+        assertEquals("CD1X-tiIQ-x7vI-Zcsy-ZHNJ-olBO-6E|160304085954428|48000|cec24d6511aea8b5c3c6a839d4f1d0a4|1507128381911|1507153581000|false|WEB_blixtuser1|Alzhu4LhTd8XoFW6Iz8qUpFHtYUb9UtkPOQ9u7Npclw=", testCredentials.getSessionToken());
     }
 
     @Test
     public void getCrmToken() throws Exception {
-        assertEquals("A29i-4mTJ-AwOK-4yeu-kryc-MGaa-rp", testCredentials.getCrmToken());
+        assertEquals("CD1X-tiIQ-x7vI-Zcsy-ZHNJ-olBO-6E", testCredentials.getCrmToken());
     }
 
     @Test
     public void getAccountId() throws Exception {
-        assertEquals("151103182419922", testCredentials.getAccountId());
+        assertEquals("160304085954428", testCredentials.getAccountId());
     }
 
     @Test
     public void getExpiration() throws Exception {
         Calendar gc = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-        gc.set(2017, 1, 22, 22, 2, 57);
+        gc.set(2017, Calendar.OCTOBER, 04, 21, 46, 21);
         gc.set(Calendar.MILLISECOND, 0);
         assertEquals(gc.getTime(), testCredentials.getExpiration());
     }
 
     @Test
     public void getAccountStatus() throws Exception {
-        assertEquals("Active", testCredentials.getAccountStatus());
+        assertEquals("Activex", testCredentials.getAccountStatus());
     }
 
 }

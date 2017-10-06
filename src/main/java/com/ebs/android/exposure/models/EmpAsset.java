@@ -12,4 +12,8 @@ public class EmpAsset extends IPlayable {
     public String resolution;
     public String popularity;
     public String duration;
+
+    public String getId() {
+        return assetId;
+    }
 }

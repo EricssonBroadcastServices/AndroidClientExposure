@@ -13,6 +13,11 @@ public class EmpProgram extends EmpAsset {
     public DateTime startDateTime;
     public DateTime endDateTime;
 
+    @Override
+    public String getId() {
+        return programId + "@" + channelId;
+    }
+
     public boolean liveNow() {
         if(this.startDateTime == null || this.endDateTime == null) {
             return false;
