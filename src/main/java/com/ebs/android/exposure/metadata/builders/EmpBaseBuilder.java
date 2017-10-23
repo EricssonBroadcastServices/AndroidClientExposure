@@ -88,6 +88,9 @@ public class EmpBaseBuilder {
         if(images != null) {
             for(int i = 0; i < images.length(); ++i) {
                 JSONObject imageData = images.getJSONObject(i);
+                if (imageData.has("type") == false) {
+                    continue;
+                }
                 String imgTypeData = imageData.getString("type");
                 if(i == 0) {
                     logoUrl = imageData.getString("url");
