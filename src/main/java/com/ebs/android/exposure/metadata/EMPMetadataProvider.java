@@ -58,7 +58,7 @@ public class EMPMetadataProvider {
         long nowMs = System.currentTimeMillis();
         long from = nowMs - timeBox;
         long to = nowMs + timeBox;
-        makeRequest("/epg/" + channelId + "?from=" + from + "&to=" + to, new EpgBuilder(callback));
+        makeRequest("/epg/" + channelId + "?from=" + from + "&to=" + to + "&pageSize=500", new EpgBuilder(callback));
     }
 
     public void getChannels(IMetadataCallback<ArrayList<EmpChannel>> callback) {

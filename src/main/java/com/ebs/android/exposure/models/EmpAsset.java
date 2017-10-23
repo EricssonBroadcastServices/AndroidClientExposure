@@ -16,4 +16,17 @@ public class EmpAsset extends IPlayable {
     public String getId() {
         return assetId;
     }
+
+    public EmpAsset() {
+
+    }
+
+    public void setProps(EmpAsset other) {
+        this.assetId = other.assetId;
+        this.imageUrl = other.imageUrl;
+        this.title = other.title;
+        this.resolution = other.resolution;
+        this.popularity = other.popularity;
+        this.duration = other.duration;
+    }
 }
