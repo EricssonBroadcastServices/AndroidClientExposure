@@ -35,9 +35,13 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //compile project(':libraries:utilities')
-    compile 'com.github.EricssonBroadcastServices:AndroidClientUtilities:master-SNAPSHOT'
     compile 'joda-time:joda-time:2.9.4'
+    if (project.hasProperty('hasParentProject')) {
+        compile project(':libraries:utilities')
+    }
+    else {
+        compile 'com.github.EricssonBroadcastServices:AndroidClientUtilities:master-SNAPSHOT'
+    }
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

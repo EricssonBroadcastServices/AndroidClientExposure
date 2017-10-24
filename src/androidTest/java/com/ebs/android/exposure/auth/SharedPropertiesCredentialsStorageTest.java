@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import net.ericsson.emovs.utilities.ContextRegistry;
+
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,9 +38,10 @@ public class SharedPropertiesCredentialsStorageTest {
 
     @Test
     public void testStoreCredentials() throws Exception {
-         Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        ContextRegistry.bind(appContext);
 
-        SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance(appContext);
+        SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance();
         sharedPropertiesCredentialsStorage.storeCredentials(API_URL, CUSTOMER, BUSINESS_UNIT, Credentials.fromJSON(new JSONObject(AUTH_RESPONSE)));
 
         assertEquals(API_URL, sharedPropertiesCredentialsStorage.getExposureUrl());
@@ -50,8 +53,8 @@ public class SharedPropertiesCredentialsStorageTest {
     @Test
     public void testDeleteCredentials() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-
-        SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance(appContext);
+        ContextRegistry.bind(appContext);
+        SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance();
         sharedPropertiesCredentialsStorage.storeCredentials(API_URL, CUSTOMER, BUSINESS_UNIT, Credentials.fromJSON(new JSONObject(AUTH_RESPONSE)));
 
         sharedPropertiesCredentialsStorage.deleteCredentials();

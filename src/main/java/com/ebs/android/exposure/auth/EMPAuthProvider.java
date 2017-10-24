@@ -19,6 +19,8 @@ import com.ebs.android.exposure.clients.exposure.ExposureError;
 import com.ebs.android.exposure.interfaces.IAuthenticationListener;
 import com.ebs.android.exposure.interfaces.ICredentialsStorageProvider;
 
+import net.ericsson.emovs.utilities.ContextRegistry;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,8 +38,8 @@ public class EMPAuthProvider {
         private final static EMPAuthProvider sInstance = new EMPAuthProvider();
     }
 
-    public static EMPAuthProvider getInstance(Context context) {
-        EmpAuthProviderHolder.sInstance.setApplicationContext(context);
+    public static EMPAuthProvider getInstance() {
+        EmpAuthProviderHolder.sInstance.setApplicationContext(ContextRegistry.get());
         return EmpAuthProviderHolder.sInstance;
     }
 

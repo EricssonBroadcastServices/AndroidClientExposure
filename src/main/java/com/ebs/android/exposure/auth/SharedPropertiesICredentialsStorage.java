@@ -17,6 +17,8 @@ import android.util.Log;
 
 import com.ebs.android.exposure.interfaces.ICredentialsStorageProvider;
 
+import net.ericsson.emovs.utilities.ContextRegistry;
+
 import org.json.JSONObject;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -37,8 +39,8 @@ public class SharedPropertiesICredentialsStorage implements ICredentialsStorageP
         private final static SharedPropertiesICredentialsStorage sInstance = new SharedPropertiesICredentialsStorage();
     }
 
-    public static SharedPropertiesICredentialsStorage getInstance(Context context) {
-        CredentialsStoreHolder.sInstance.setApplicationContext(context);
+    public static SharedPropertiesICredentialsStorage getInstance() {
+        CredentialsStoreHolder.sInstance.setApplicationContext(ContextRegistry.get());
         return CredentialsStoreHolder.sInstance;
     }
 
