@@ -280,10 +280,21 @@ public class EMPAuthProvider {
     public void checkAuth(final IAuthenticationListener listener) {
         final String path = "auth/session";
         if (isAuthenticated()){
-            //TODO: make the actual exposure call
             ExposureClient exposureClient = ExposureClient.getInstance();
             exposureClient.setSessionToken(mCredentials.getSessionToken());
-            listener.onAuthSuccess(null);
+
+            ExposureClient.getInstance().getAsync(path, new IExposureCallback() {
+                @Override
+                public void onCallCompleted(JSONObject response, ExposureError error) {
+                    if (error != null) {
+                        if (listener != null) {
+                            listener.onAuthError(error);
+                        }
+                        return;
+                    }
+                    listener.onAuthSuccess(mCredentials.getSessionToken());
+                }
+            });
         } else {
             if (null != listener) {
                 listener.onAuthError(ExposureError.NO_SESSION_TOKEN);
