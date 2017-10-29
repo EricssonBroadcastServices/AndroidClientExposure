@@ -40,11 +40,11 @@ public class EmpBaseBuilder {
         for(int i = 0; i < localized.length(); ++i) {
             JSONObject localeData = localized.getJSONObject(i);
             String propLocale = localeData.getString("locale");
-            if(i == 0) {
+            if(i == 0 && localeData.has(property)) {
                 propertyToReturn = localeData.getString(property);
             }
 
-            if(locale.equals(propLocale)) {
+            if(locale.equals(propLocale) && localeData.has(property)) {
                 propertyToReturn = localeData.getString(property);
             }
         }
