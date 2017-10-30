@@ -106,13 +106,14 @@ public class EmpBaseBuilder {
         return logoUrl;
     }
 
-    protected EmpAsset getAsset(JSONObject assetJson, EmpAsset asset, boolean checkEmptyMedias) throws JSONException {
+    public EmpAsset getAsset(JSONObject assetJson, EmpAsset asset, boolean checkEmptyMedias) throws JSONException {
         asset.title = getLocalized(assetJson, "en", "title");
         asset.imageUrl = getLocalizedImages(assetJson, "en", "banner");
         asset.assetId = assetJson.getString("assetId");
         asset.resolution = "";
         asset.popularity = "";
         asset.duration = "";
+        asset.setJson(assetJson);
         if(checkEmptyMedias) {
             JSONArray medias = assetJson.getJSONArray("medias");
             if(medias.length() == 0) {

@@ -1,5 +1,7 @@
 package com.ebs.android.exposure.interfaces;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -8,4 +10,5 @@ import java.io.Serializable;
 
 public abstract class IPlayable implements Serializable {
     public abstract String getId();
+    public abstract JSONObject getJson();
 }

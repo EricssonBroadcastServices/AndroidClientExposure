@@ -2,6 +2,8 @@ package com.ebs.android.exposure.models;
 
 import com.ebs.android.exposure.interfaces.IPlayable;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -40,5 +42,11 @@ public class EmpChannel extends IPlayable {
 
     public String getId() {
         return "live@" + channelId;
+    }
+
+    @Override
+    public JSONObject getJson() {
+        // TODO: implement
+        return null;
     }
 }
