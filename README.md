@@ -19,7 +19,7 @@
 ## Installation
 
 ### JitPack
-Releases are available on [JitPack](https://jitpack.io/#EricssonBroadcastServices/AndroidClientExposure) and can be automatically imported to your project using Gradle dependency management.
+Releases are available on [JitPack](https://jitpack.io/#EricssonBroadcastServices/AndroidClientExposure) and can be automatically imported to your project using Gradle.
 
 Add the jitpack.io repository to your project **build.gradle**:
 ```gradle
@@ -34,14 +34,14 @@ allprojects {
 Then add the dependency to your module **build.gradle**:
 ```gradle
 dependencies {
-    compile 'com.github.EricssonBroadcastServices:utilities:{version}'
+    compile 'com.github.EricssonBroadcastServices:AndroidClientExposure:{version}'
 }
 ```
 
 Note: do not add the jitpack.io repository under *buildscript {}*
 
 ## Release Notes
-Release specific changes can be found in the [CHANGELOG](https://github.com/EricssonBroadcastServices/AndroidClientExposure/blob/master/CHANGELOG.md).
+Release specific changes can be found in the [CHANGELOG](CHANGELOG.md).
 
 ## Upgrade Guides
-Major changes between releases will be documented with special [Upgrade Guides](https://github.com/EricssonBroadcastServices/AndroidClientExposure/blob/master/UPGRADE_GUIDE.md).
+Major changes between releases will be documented with special [Upgrade Guides](UPGRADE_GUIDE.md).
