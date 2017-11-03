@@ -53,7 +53,7 @@ public class SharedPropertiesICredentialsStorage implements ICredentialsStorageP
     }
 
     public void init() {
-        mSharedPreferences = mContext.getSharedPreferences("EMPCredentials", MODE_PRIVATE);
+        mSharedPreferences = mContext.getSharedPreferences("EMPCredentials_" + ContextRegistry.get().getPackageName(), MODE_PRIVATE);
         String credentials = mSharedPreferences.getString(CREDENTIALS, "");
         if(!TextUtils.isEmpty(credentials)) {
             try {

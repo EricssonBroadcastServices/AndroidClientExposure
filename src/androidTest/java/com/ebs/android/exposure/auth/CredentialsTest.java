@@ -60,7 +60,7 @@ public class CredentialsTest {
 
     @Test
     public void getAccountStatus() throws Exception {
-        assertEquals("Activex", testCredentials.getAccountStatus());
+        assertEquals("Active", testCredentials.getAccountStatus());
     }
 
 }
