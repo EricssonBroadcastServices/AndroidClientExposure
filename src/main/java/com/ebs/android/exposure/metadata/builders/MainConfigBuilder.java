@@ -33,23 +33,12 @@ public class MainConfigBuilder extends EmpBaseBuilder implements IExposureCallba
             return null;
         }
 
-        JSONArray configs;
         try {
-            configs = mainConfig.getJSONArray("config");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        if (configs.length() == 0) {
-            return null;
-        }
-
-        try {
-            JSONObject config = configs.getJSONObject(0);
+            JSONObject config = mainConfig.getJSONObject("config");
             String carouselGroupId = config.getString("carouselGroupId");
             return carouselGroupId;
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
         }
 
         return null;
