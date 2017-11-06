@@ -32,7 +32,7 @@ public class AutocompleteBuilder extends EmpBaseBuilder implements IExposureCall
                     String assetId = assetJson.getString("assetId");
                     String title = assetJson.getString("text");
 
-                    asset.title = title;
+                    asset.originalTitle = title;
                     asset.assetId = assetId;
 
                     assets.add(asset);
