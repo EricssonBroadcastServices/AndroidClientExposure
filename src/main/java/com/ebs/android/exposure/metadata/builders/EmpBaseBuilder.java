@@ -5,6 +5,7 @@ import com.ebs.android.exposure.metadata.IMetadataCallback;
 import com.ebs.android.exposure.models.EmpAsset;
 import com.ebs.android.exposure.models.EmpImage;
 import com.ebs.android.exposure.models.EmpProgram;
+import com.ebs.android.exposure.models.LocalizedMetadata;
 
 import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
@@ -72,21 +73,24 @@ public class EmpBaseBuilder {
         return propertyToReturn;
     }
 
-    protected void fillLocalized(JSONObject obj, EmpAsset asset) throws JSONException {
-        JSONArray localized = obj.getJSONArray("localized");
-        String logoUrl = null;
+    protected void fillLocalized(JSONObject obj, LocalizedMetadata metadata) throws JSONException {
+        JSONArray localized = obj.has("localized") ? obj.getJSONArray("localized") : obj.optJSONArray("titles");
+        if (localized == null) {
+            return;
+        }
         for (int i = 0; i < localized.length(); ++i) {
             JSONObject localeData = localized.getJSONObject(i);
             String propLocale = localeData.optString("locale", "");
-            JSONArray images = localeData.getJSONArray("images");
+            JSONArray images = localeData.optJSONArray("images");
             ArrayList<EmpImage> empImages = new ArrayList<>();
-            for (int j = 0; j < images.length(); ++j) {
+            for (int j = 0; images != null && j < images.length(); ++j) {
                 JSONObject image = images.getJSONObject(j);
                 EmpImage empImg = imageFromJson(image);
                 empImages.add(empImg);
             }
-            asset.localizedImages.put(propLocale, empImages);
-            asset.localizedTitles.put(propLocale, localeData.optString("title", null));
+            metadata.images.put(propLocale, empImages);
+            metadata.titles.put(propLocale, localeData.optString("title", null));
+            metadata.descriptions.put(propLocale, localeData.optString("description", null));
         }
     }
 
@@ -128,11 +132,16 @@ public class EmpBaseBuilder {
     }
 
     public EmpAsset getAsset(JSONObject assetJson, EmpAsset asset, boolean checkEmptyMedias) throws JSONException {
-        asset.originalTitle = assetJson.optString("originalTitle", "");
+        asset.originalTitle = assetJson.optString("originalTitle", null);
         asset.assetId = assetJson.getString("assetId");
-        asset.resolution = "";
         asset.popularity = "";
-        asset.duration = "";
+        if (assetJson.has("userData")) {
+            if (assetJson.getJSONObject("userData").has("playHistory")) {
+                JSONObject playHistoryJson = assetJson.getJSONObject("userData").getJSONObject("playHistory");
+                asset.lastViewedOffset = playHistoryJson.optLong("lastViewedOffset");
+                asset.lastViewedTime = playHistoryJson.optLong("lastViewedTime");
+            }
+        }
         asset.setJson(assetJson);
         if (checkEmptyMedias) {
             JSONArray medias = assetJson.getJSONArray("medias");
@@ -141,7 +150,7 @@ public class EmpBaseBuilder {
                 return asset;
             }
         }
-        fillLocalized(assetJson, asset);
+        fillLocalized(assetJson, asset.localized);
         return asset;
     }
 

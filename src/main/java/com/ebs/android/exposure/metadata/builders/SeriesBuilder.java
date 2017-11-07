@@ -48,11 +48,10 @@ public class SeriesBuilder extends EmpBaseBuilder implements IExposureCallback {
                     }
 
                     series.episodes = episodes;
-                    series.name = this.getLocalized(seriesJson, "en", "title");
-                    series.logoUrl = this.getLocalizedImages(seriesJson, "en", "thumbnail");
                     series.seriesId = seriesJson.getString("seasonId");
+                    fillLocalized(seriesJson, series.localized);
 
-                    if (episodesJson == null || series.name == null || series.name.equals("")) {
+                    if (episodesJson == null) {
                         continue;
                     }
 

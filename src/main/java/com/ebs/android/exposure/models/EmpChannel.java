@@ -12,9 +12,13 @@ import java.util.ArrayList;
 
 public class EmpChannel extends IPlayable {
     public String channelId;
-    public String name;
+    public String originalTitle;
     public ArrayList<EmpProgram> programs;
-    public String logoUrl;
+    public LocalizedMetadata localized;
+
+    public EmpChannel(){
+        this.localized = new LocalizedMetadata();
+    }
 
     public EmpProgram liveProgram() {
         if(programs == null || programs.size() == 0) {

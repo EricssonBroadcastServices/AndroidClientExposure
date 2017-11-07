@@ -7,6 +7,10 @@ import java.util.ArrayList;
  */
 
 public class EmpCarousel {
-    public String name;
     public ArrayList<EmpAsset> assets;
+    public LocalizedMetadata localized;
+
+    public EmpCarousel() {
+        this.localized = new LocalizedMetadata();
+    }
 }

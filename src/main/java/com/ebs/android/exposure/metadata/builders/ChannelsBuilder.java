@@ -29,16 +29,11 @@ public class ChannelsBuilder extends EmpBaseBuilder implements IExposureCallback
             for(int i = 0; i < items.length(); ++i) {
                 try {
                     EmpChannel channel = new EmpChannel();
-
                     JSONObject channelJson = items.getJSONObject(i);
-                    String channelName = this.getLocalized(channelJson, "en", "title");
-                    String logoUrl = this.getLocalizedImages(channelJson, "en", "thumbnail");
                     String channelId = channelJson.getString("assetId");
-
-                    channel.name = channelName;
-                    channel.logoUrl = logoUrl;
+                    channel.originalTitle = channelJson.optString("originalTitle", null);
                     channel.channelId = channelId;
-
+                    fillLocalized(channelJson, channel.localized);
                     channels.add(channel);
                 }
                 catch (JSONException e) {

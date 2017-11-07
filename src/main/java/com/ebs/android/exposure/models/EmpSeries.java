@@ -9,8 +9,10 @@ import java.util.ArrayList;
 
 public class EmpSeries implements Serializable {
     public String seriesId;
-    public String name;
     public ArrayList<EmpEpisode> episodes;
-    public String logoUrl;
+    public LocalizedMetadata localized;
 
+    public EmpSeries() {
+        this.localized = new LocalizedMetadata();
+    }
 }
