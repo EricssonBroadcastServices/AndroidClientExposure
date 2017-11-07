@@ -4,7 +4,7 @@ package com.ebs.android.exposure.metadata.queries;
  * Created by Joao Coelho on 2017-09-26.
  */
 
-public class SeriesQueryParameters {
+public class SeriesQueryParameters extends BaseQueryParams {
     boolean includeEpisodes;
 
     public SeriesQueryParameters() {

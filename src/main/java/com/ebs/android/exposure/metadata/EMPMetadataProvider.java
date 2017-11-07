@@ -20,6 +20,8 @@ import com.ebs.android.exposure.metadata.builders.ChannelsBuilder;
 import com.ebs.android.exposure.metadata.builders.EpgBuilder;
 import com.ebs.android.exposure.metadata.builders.MainConfigBuilder;
 import com.ebs.android.exposure.metadata.builders.SeriesBuilder;
+import com.ebs.android.exposure.metadata.queries.ChannelsQueryParameters;
+import com.ebs.android.exposure.metadata.queries.EpgQueryParameters;
 import com.ebs.android.exposure.metadata.queries.SeriesQueryParameters;
 import com.ebs.android.exposure.models.EmpAsset;
 import com.ebs.android.exposure.models.EmpCarousel;
@@ -52,33 +54,34 @@ public class EMPMetadataProvider {
         makeRequest("/content/season?includeEpisodes=" + params.includeEpisodes(), new SeriesBuilder(callback));
     }
 
-    public void getEpg(String channelId, IMetadataCallback<ArrayList<EmpProgram>> callback) {
-        // TODO: make time box configurable
-        long timeBox = 1000 * 60 * 60 * 24 * 2; // 5 days
+    public void getEpg(String channelId, IMetadataCallback<ArrayList<EmpProgram>> callback, EpgQueryParameters params) {
         long nowMs = System.currentTimeMillis();
-        long from = nowMs - timeBox;
-        long to = nowMs + timeBox;
-        makeRequest("/epg/" + channelId + "?from=" + from + "&to=" + to + "&pageSize=500", new EpgBuilder(callback));
+        long from = nowMs - params.getPastTimeFrame();
+        long to = nowMs + params.getFutureTimeFrame();
+        makeRequest("/epg/" + channelId + "?from=" + from + "&to=" + to + "&pageSize=" + params.getPageSize(), new EpgBuilder(callback));
     }
 
-    public void getChannels(IMetadataCallback<ArrayList<EmpChannel>> callback) {
-        // TODO: make channel query params configurable
-        String url = "/content/asset" + "?fieldSet=ALL&&includeUserData=true&pageNumber=1&sort=originalTitle&pageSize=100&onlyPublished=true&assetType=TV_CHANNEL";
+    public void getChannels(IMetadataCallback<ArrayList<EmpChannel>> callback, ChannelsQueryParameters params) {
+        String url = "/content/asset?"
+                + "fieldSet=" + params.getFieldSet()
+                + "&includeUserData=" + params.isIncludeUserData()
+                + "&pageNumber=" + params.getPageNumber()
+                + "&sort=" + params.getSort()
+                + "&pageSize=" + params.getPageSize()
+                + "&onlyPublished=" + params.isOnlyPublished()
+                + "&assetType=TV_CHANNEL";
         makeRequest(url, new ChannelsBuilder(callback));
     }
 
     public void getAssets(String endpoint, IMetadataCallback<ArrayList<EmpAsset>> callback) {
-        // TODO: make asset list query params configurable
         makeRequest(endpoint, new AssetListBuilder(callback));
     }
 
     public void autocomplete(String query, IMetadataCallback<ArrayList<EmpAsset>> callback) {
-        // TODO: make autocomplete query params configurable
         makeRequest("/content/search/autocomplete/" + query, new AutocompleteBuilder(callback));
     }
 
     public void getCarouselGroupById(String carouselGroupId, IMetadataCallback<ArrayList<EmpCarousel>> callback) {
-        // TODO: make carouselgroup query params configurable
         makeRequest("/carouselgroup/" + carouselGroupId, new CarouselGroupBuilder(callback));
     }
 
