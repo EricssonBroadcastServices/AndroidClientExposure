@@ -5,10 +5,10 @@ package com.ebs.android.exposure.metadata.queries;
  */
 
 public class ChannelsQueryParameters extends BaseQueryParams {
-    public static final ChannelsQueryParameters DEFAULT = new ChannelsQueryParameters();
+    public static final ChannelsQueryParameters DEFAULT = (ChannelsQueryParameters) new ChannelsQueryParameters().setPageSize(100);
 
     public ChannelsQueryParameters() {
-
+        super();
     }
 
 }
