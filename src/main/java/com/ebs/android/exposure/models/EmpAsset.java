@@ -11,7 +11,6 @@ import org.json.JSONObject;
 public class EmpAsset extends IPlayable {
     public String assetId;
     public String originalTitle;
-    public String popularity;
     private String jsonObj;
 
     public Long lastViewedOffset;
@@ -44,7 +43,6 @@ public class EmpAsset extends IPlayable {
     public void setProps(EmpAsset other) {
         this.assetId = other.assetId;
         this.originalTitle = other.originalTitle;
-        this.popularity = other.popularity;
         this.localized.images.clear();
         this.localized.images.putAll(other.localized.images);
         this.localized.titles.clear();

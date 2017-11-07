@@ -134,7 +134,6 @@ public class EmpBaseBuilder {
     public EmpAsset getAsset(JSONObject assetJson, EmpAsset asset, boolean checkEmptyMedias) throws JSONException {
         asset.originalTitle = assetJson.optString("originalTitle", null);
         asset.assetId = assetJson.getString("assetId");
-        asset.popularity = "";
         if (assetJson.has("userData")) {
             if (assetJson.getJSONObject("userData").has("playHistory")) {
                 JSONObject playHistoryJson = assetJson.getJSONObject("userData").getJSONObject("playHistory");
@@ -148,6 +147,11 @@ public class EmpBaseBuilder {
             if (medias.length() == 0) {
                 asset = null;
                 return asset;
+            }
+            for (int i = 0; i < medias.length(); ++i) {
+                JSONObject mediaJson = medias.getJSONObject(i);
+                asset.durationMillis = mediaJson.optLong("durationMillis");
+                break;
             }
         }
         fillLocalized(assetJson, asset.localized);
