@@ -38,12 +38,6 @@ public class CarouselGroupBuilder extends EmpBaseBuilder implements IExposureCal
                 JSONArray carouselAssets = carouselJson.getJSONObject("items").getJSONArray("items");
                 EmpCarousel carousel = new EmpCarousel();
 
-                String carouselTitle = "";
-                if (carouselJson.has ("titles")) {
-                    JSONArray localized = carouselJson.getJSONArray("titles");
-                    carouselTitle = getLocalized(localized, "en", "title");
-                }
-
                 carousel.assets = new ArrayList<>();
                 fillLocalized(carouselJson, carousel.localized);
 
