@@ -30,6 +30,9 @@ public class EmpAsset extends IPlayable {
     @Override
     public JSONObject getJson() {
         try {
+            if (this.jsonObj == null) {
+                return new JSONObject().put("assetId", assetId);
+            }
             return new JSONObject(this.jsonObj);
         } catch (JSONException e) {
             e.printStackTrace();
