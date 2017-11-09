@@ -81,7 +81,13 @@ public class Credentials {
             accountId = credentials.getString("accountId");
         }
         if (credentials.has("expirationDateTime")) {
-            expirationDateTime = DateTimeParser.parseUtcDateTime(credentials.getString("expirationDateTime"));
+            String expirationDateTimeStr = credentials.getString("expirationDateTime");
+            if(expirationDateTimeStr.contains(".")) {
+                expirationDateTime = DateTimeParser.parseUtcDateTime(expirationDateTimeStr, true);
+            }
+            else {
+                expirationDateTime = DateTimeParser.parseUtcDateTime(expirationDateTimeStr, false);
+            }
         }
         if (credentials.has("accountStatus")) {
             accountStatus = credentials.getString("accountStatus");
