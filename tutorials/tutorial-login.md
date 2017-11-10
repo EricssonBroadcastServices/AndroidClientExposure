@@ -20,6 +20,7 @@ public class MyApplication extends Application {
 	
 	// ...
 }
+```
 
 Our library provides an easy way to check if the user is logged in and if the session is still valid. Based on this result, the app should show the login form or not.
 
