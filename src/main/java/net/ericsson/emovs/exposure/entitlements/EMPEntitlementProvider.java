@@ -138,7 +138,7 @@ public class EMPEntitlementProvider {
 
         response.ffEnabled = jsonObject.optBoolean("ffEnabled", true);
         response.rwEnabled = jsonObject.optBoolean("rwEnabled", true);
-        response.lastViewedOffset = jsonObject.optInt("lastViewedOffset", 0);
+        response.lastViewedOffset = jsonObject.optLong("lastViewedOffset", 0);
         response.productId = jsonObject.optString("productId", null);
 
         return response;

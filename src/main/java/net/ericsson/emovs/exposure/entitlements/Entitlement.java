@@ -23,7 +23,7 @@ public class Entitlement implements Serializable {
     public Integer maxBitrate;
     public Integer minBitrate;
     public int imcMode;
-    public int lastViewedOffset;
+    public long lastViewedOffset;
     public String productId;
     public String licenseExpiration;
 }
