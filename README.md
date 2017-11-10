@@ -1,6 +1,7 @@
 # Exposure    [![Release](https://jitpack.io/v/EricssonBroadcastServices/AndroidClientExposure.svg)](https://jitpack.io/#EricssonBroadcastServices/AndroidClientExposure)
 
 * [Features](#features)
+* [Tutorials](#tutorials)
 * [License](https://github.com/EricssonBroadcastServices/AndroidClientExposure/blob/master/LICENSE)
 * [Requirements](#requirements)
 * [Installation](#installation)
@@ -11,6 +12,13 @@
 ## Features
 
 - [x] Authentication
+- [x] Entitlements
+- [x] Metadata
+
+## Tutorials
+
+- [Login](tutorials/tutorial-login.md)
+- [Fetching Metadata](tutorials/tutorial-metadata.md)
 
 ## Requirements
 
