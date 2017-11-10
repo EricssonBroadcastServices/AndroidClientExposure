@@ -17,7 +17,7 @@ EMPMetadataProvider.getInstance().getAssets("/content/asset?fieldSet=ALL&&includ
 ```
 
 Equivalent methods exist for the following purposes:
-- Fetching series
+- Fetching series & episodes
 - Fetching channels
 - Fetching a channel EPG
 - Fetching autocomplete search results
