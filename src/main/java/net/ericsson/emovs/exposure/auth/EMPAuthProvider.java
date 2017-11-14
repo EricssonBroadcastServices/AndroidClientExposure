@@ -20,7 +20,7 @@ import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
 import net.ericsson.emovs.exposure.interfaces.IAuthenticationListener;
 import net.ericsson.emovs.exposure.interfaces.ICredentialsStorageProvider;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
-import net.ericsson.emovs.utilities.ContextRegistry;
+import net.ericsson.emovs.utilities.EMPRegistry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +40,7 @@ public class EMPAuthProvider {
     }
 
     public static EMPAuthProvider getInstance() {
-        EmpAuthProviderHolder.sInstance.setApplicationContext(ContextRegistry.get());
+        EmpAuthProviderHolder.sInstance.setApplicationContext(EMPRegistry.applicationContext());
         return EmpAuthProviderHolder.sInstance;
     }
 
@@ -64,6 +64,9 @@ public class EMPAuthProvider {
     }
 
     public Boolean isAuthenticated() {
+        if(mCredentials == null) {
+            mCredentials = SharedPropertiesICredentialsStorage.getInstance().getCredentials();
+        }
         return null != mCredentials;
     }
 

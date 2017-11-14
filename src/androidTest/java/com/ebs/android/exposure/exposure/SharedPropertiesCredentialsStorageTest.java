@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import net.ericsson.emovs.utilities.ContextRegistry;
+import net.ericsson.emovs.utilities.EMPRegistry;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -39,7 +39,7 @@ public class SharedPropertiesCredentialsStorageTest {
     @Test
     public void testStoreCredentials() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        ContextRegistry.bind(appContext);
+        EMPRegistry.bindApplicationContext(appContext);
 
         SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance();
         sharedPropertiesCredentialsStorage.storeCredentials(API_URL, CUSTOMER, BUSINESS_UNIT, Credentials.fromJSON(new JSONObject(AUTH_RESPONSE)));
@@ -53,7 +53,7 @@ public class SharedPropertiesCredentialsStorageTest {
     @Test
     public void testDeleteCredentials() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        ContextRegistry.bind(appContext);
+        EMPRegistry.bindApplicationContext(appContext);
         SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance();
         sharedPropertiesCredentialsStorage.storeCredentials(API_URL, CUSTOMER, BUSINESS_UNIT, Credentials.fromJSON(new JSONObject(AUTH_RESPONSE)));
 

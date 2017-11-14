@@ -18,7 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import net.ericsson.emovs.exposure.interfaces.ICredentialsStorageProvider;
-import net.ericsson.emovs.utilities.ContextRegistry;
+import net.ericsson.emovs.utilities.EMPRegistry;
 
 import org.json.JSONObject;
 
@@ -41,7 +41,7 @@ public class SharedPropertiesICredentialsStorage implements ICredentialsStorageP
     }
 
     public static SharedPropertiesICredentialsStorage getInstance() {
-        CredentialsStoreHolder.sInstance.setApplicationContext(ContextRegistry.get());
+        CredentialsStoreHolder.sInstance.setApplicationContext(EMPRegistry.applicationContext());
         return CredentialsStoreHolder.sInstance;
     }
 
@@ -54,7 +54,7 @@ public class SharedPropertiesICredentialsStorage implements ICredentialsStorageP
     }
 
     public void init() {
-        mSharedPreferences = mContext.getSharedPreferences("EMPCredentials_" + ContextRegistry.get().getPackageName(), MODE_PRIVATE);
+        mSharedPreferences = mContext.getSharedPreferences("EMPCredentials_" + EMPRegistry.applicationContext().getPackageName(), MODE_PRIVATE);
         String credentials = mSharedPreferences.getString(CREDENTIALS, "");
         if(!TextUtils.isEmpty(credentials)) {
             try {

@@ -13,8 +13,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ContextRegistry.bind(this);
-        EMPAuthProvider authProvider = EMPAuthProviderWithStorage.getInstance(Constants.API_URL, Constants.CUSTOMER, Constants.BUSSINESS_UNIT);
+        EMPRegistry.bindApplicationContext(this);
+        EMPRegistry.bindExposureContext(Constants.API_URL, Constants.CUSTOMER, Constants.BUSSINESS_UNIT);
 		// ...
 	}
 	
