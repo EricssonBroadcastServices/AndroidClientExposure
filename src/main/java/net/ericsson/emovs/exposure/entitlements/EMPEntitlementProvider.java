@@ -15,16 +15,18 @@ package net.ericsson.emovs.exposure.entitlements;
 import android.util.Log;
 
 import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
-import net.ericsson.emovs.exposure.interfaces.IEntitlementCallback;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
+import net.ericsson.emovs.utilities.Entitlement;
+import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.IEntitlementProvider;
+import net.ericsson.emovs.utilities.IEntitlementCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import static java.util.UUID.randomUUID;
 
-public class EMPEntitlementProvider {
+public class EMPEntitlementProvider implements IEntitlementProvider {
     private static final String TAG = "EMPEntitlementProvider";
 
     private static class EmpEntitlementProviderHolder {
@@ -38,11 +40,17 @@ public class EMPEntitlementProvider {
     protected EMPEntitlementProvider() {
     }
 
-
+    @Override
     public void playVod(final String assetId, final IEntitlementCallback listener) {
         getToken("/entitlement/" + assetId + "/play", listener);
     }
 
+    @Override
+    public void playLive(final String channelId, final IEntitlementCallback listener) {
+        getToken("/entitlement/channel/" + channelId + "/play", listener);
+    }
+
+    @Override
     public void playCatchup(final String channelId, final String programId, final IEntitlementCallback listener) {
         getToken("/entitlement/channel/" + channelId + "/program/" + programId + "/play", listener);
     }
@@ -51,19 +59,15 @@ public class EMPEntitlementProvider {
         getToken("/download/" + assetId, listener);
     }
 
-    public void playLive(final String channelId, final IEntitlementCallback listener) {
-        getToken("/entitlement/channel/" + channelId + "/play", listener);
-    }
-
     private void getToken(final String path, final IEntitlementCallback listener) {
         ExposureClient exposureClient = ExposureClient.getInstance();
         if (exposureClient.getSessionToken() == null) {
-            listener.onError(ExposureError.NO_SESSION_TOKEN);
+            listener.onError(Error.NO_SESSION_TOKEN);
             return;
         }
         ExposureClient.getInstance().postAsync(path, makePlayRequestParameters("CENC", "DASH"), new IExposureCallback() {
             @Override
-            public void onCallCompleted(JSONObject response, ExposureError error) {
+            public void onCallCompleted(JSONObject response, Error error) {
                 parseEntitlementResponse(listener, response, error);
             }
         });
@@ -71,7 +75,7 @@ public class EMPEntitlementProvider {
 
     private void parseEntitlementResponse(final IEntitlementCallback callback,
                                           final JSONObject response,
-                                          final ExposureError error) {
+                                          final Error error) {
         if (error != null) {
             if (callback != null) {
                 callback.onError(error);
@@ -92,12 +96,12 @@ public class EMPEntitlementProvider {
                 return;
             }
             else if (callback != null) {
-                callback.onError(ExposureError.INVALID_JSON);
+                callback.onError(Error.INVALID_JSON);
             }
         } catch (JSONException ex) {
             Log.e(TAG, "Error parsing exposure response", ex);
             if (null != callback) {
-                callback.onError(ExposureError.INVALID_JSON);
+                callback.onError(Error.INVALID_JSON);
             }
         }
     }

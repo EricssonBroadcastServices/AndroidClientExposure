@@ -1,15 +1,9 @@
 package net.ericsson.emovs.exposure.auth;
 
-
-import android.util.Log;
-
-import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
 import net.ericsson.emovs.exposure.interfaces.IAuthenticationListener;
-import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.utilities.EMPRegistry;
+import net.ericsson.emovs.utilities.Error;
 
-import org.json.JSONObject;
 
 /**
  * Created by Joao Coelho on 2017-09-25.
@@ -60,7 +54,7 @@ public class EMPAuthProviderWithStorage extends EMPAuthProvider {
             }
 
             @Override
-            public void onAuthError(ExposureError error) {
+            public void onAuthError(Error error) {
                 SharedPropertiesICredentialsStorage.getInstance().deleteCredentials();
                 listener.onAuthError(error);
             }

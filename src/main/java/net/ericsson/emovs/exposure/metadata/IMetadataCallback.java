@@ -13,9 +13,9 @@ package net.ericsson.emovs.exposure.metadata;
  */
 
 
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
+import net.ericsson.emovs.utilities.Error;
 
 public interface IMetadataCallback<M> {
     void onMetadata(M metadata);
-    void onError(ExposureError error);
+    void onError(Error error);
 }

@@ -2,10 +2,11 @@ package net.ericsson.emovs.exposure.entitlements;
 
 import android.util.Log;
 
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
-import net.ericsson.emovs.exposure.interfaces.IEntitlementCallback;
+import net.ericsson.emovs.utilities.Entitlement;
 import net.ericsson.emovs.utilities.ErrorCodes;
 import net.ericsson.emovs.utilities.ErrorRunnable;
+import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.IEntitlementCallback;
 import net.ericsson.emovs.utilities.RunnableThread;
 
 /**
@@ -34,7 +35,7 @@ public class EntitlementCallback implements IEntitlementCallback {
     }
 
     @Override
-    public void onError(ExposureError error) {
+    public void onError(Error error) {
         Log.e("EXO PLAYER ERROR", error.toString());
         if (errorRunnable != null) {
             errorRunnable.run(ErrorCodes.EXPOSURE_ENTITLEMENT_ERROR, error.toString());

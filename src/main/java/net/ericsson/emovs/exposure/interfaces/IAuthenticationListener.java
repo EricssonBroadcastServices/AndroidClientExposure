@@ -12,10 +12,11 @@ package net.ericsson.emovs.exposure.interfaces;
  * THE PRODUCT.
  */
 
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
+
+import net.ericsson.emovs.utilities.Error;
 
 public interface IAuthenticationListener {
     void onAuthSuccess(String sessionToken);
-    void onAuthError(ExposureError error);
+    void onAuthError(Error error);
 }
 

@@ -13,10 +13,10 @@ package net.ericsson.emovs.exposure.interfaces;
  */
 
 
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
+import net.ericsson.emovs.utilities.Error;
 
 import org.json.JSONObject;
 
 public interface IExposureCallback {
-    void onCallCompleted(JSONObject response, ExposureError error);
+    void onCallCompleted(JSONObject response, Error error);
 }

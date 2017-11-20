@@ -1,11 +1,11 @@
 package net.ericsson.emovs.exposure.metadata.builders;
 
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
 import net.ericsson.emovs.exposure.metadata.IMetadataCallback;
 import net.ericsson.emovs.exposure.models.EmpAsset;
 import net.ericsson.emovs.exposure.models.EmpImage;
 import net.ericsson.emovs.exposure.models.EmpProgram;
 import net.ericsson.emovs.exposure.models.LocalizedMetadata;
+import net.ericsson.emovs.utilities.Error;
 
 import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
@@ -25,7 +25,7 @@ public class EmpBaseBuilder {
         this.listener = listener;
     }
 
-    protected boolean handleError(ExposureError error) {
+    protected boolean handleError(Error error) {
         if (listener == null) {
             return true;
         }

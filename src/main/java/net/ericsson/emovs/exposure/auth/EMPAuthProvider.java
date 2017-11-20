@@ -16,11 +16,11 @@ import android.content.Context;
 import android.util.Log;
 
 import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
 import net.ericsson.emovs.exposure.interfaces.IAuthenticationListener;
 import net.ericsson.emovs.exposure.interfaces.ICredentialsStorageProvider;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.utilities.EMPRegistry;
+import net.ericsson.emovs.utilities.Error;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,7 +72,7 @@ public class EMPAuthProvider {
 
     private void parseAuthResponse(final IAuthenticationListener listener,
                                      final JSONObject response,
-                                     final ExposureError error) {
+                                     final Error error) {
         if (null != error) {
             if (null != listener) {
                 listener.onAuthError(error);
@@ -97,7 +97,7 @@ public class EMPAuthProvider {
         } catch (JSONException | ParseException ex) {
             Log.e(TAG, "Error parsing exposure response", ex);
             if (null != listener) {
-                listener.onAuthError(ExposureError.INVALID_JSON);
+                listener.onAuthError(Error.INVALID_JSON);
             }
         }
     }
@@ -112,14 +112,14 @@ public class EMPAuthProvider {
 
             ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
-                public void onCallCompleted(JSONObject response, ExposureError error) {
+                public void onCallCompleted(JSONObject response, Error error) {
                     parseAuthResponse(listener, response, error);
                 }
             });
         } catch (JSONException e0) {
             Log.e(TAG, "anonymous authentication error", e0);
             if(null != listener) {
-                listener.onAuthError(ExposureError.INVALID_JSON);
+                listener.onAuthError(Error.INVALID_JSON);
             }
         }
     }
@@ -147,14 +147,14 @@ public class EMPAuthProvider {
 
             ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
-                public void onCallCompleted(JSONObject response, ExposureError error) {
+                public void onCallCompleted(JSONObject response, Error error) {
                     parseAuthResponse(listener, response, error);
                 }
             });
         } catch (JSONException e0) {
             Log.e(TAG, "Authentication error", e0);
             if(null != listener) {
-                listener.onAuthError(ExposureError.INVALID_JSON);
+                listener.onAuthError(Error.INVALID_JSON);
             }
         }
     }
@@ -176,14 +176,14 @@ public class EMPAuthProvider {
 
             ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
-                public void onCallCompleted(JSONObject response, ExposureError error) {
+                public void onCallCompleted(JSONObject response, Error error) {
                     parseAuthResponse(listener, response, error);
                 }
             });
         } catch (JSONException e0) {
             Log.e(TAG, "Authentication error", e0);
             if(null != listener) {
-                listener.onAuthError(ExposureError.INVALID_JSON);
+                listener.onAuthError(Error.INVALID_JSON);
             }
         }
     }
@@ -204,14 +204,14 @@ public class EMPAuthProvider {
 
             ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
-                public void onCallCompleted(JSONObject response, ExposureError error) {
+                public void onCallCompleted(JSONObject response, Error error) {
                     parseAuthResponse(listener, response, error);
                 }
             });
         } catch (JSONException e0) {
             Log.e(TAG, "Authentication error", e0);
             if(null != listener) {
-                listener.onAuthError(ExposureError.INVALID_JSON);
+                listener.onAuthError(Error.INVALID_JSON);
             }
         }
     }
@@ -224,7 +224,7 @@ public class EMPAuthProvider {
 
             ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
-                public void onCallCompleted(JSONObject response, ExposureError error) {
+                public void onCallCompleted(JSONObject response, Error error) {
                     if (null != error) {
                         if (null != listener) {
                             listener.onAuthError(error);
@@ -239,13 +239,13 @@ public class EMPAuthProvider {
                             }
                         } else {
                             if (null != listener) {
-                                listener.onAuthError(ExposureError.INCORRECT_CREDENTIALS);
+                                listener.onAuthError(Error.INCORRECT_CREDENTIALS);
                             }
                         }
                     } catch (JSONException e0) {
                         Log.e(TAG, "Password check error", e0);
                         if(null != listener) {
-                            listener.onAuthError(ExposureError.INVALID_JSON);
+                            listener.onAuthError(Error.INVALID_JSON);
                         }
                     }
                 }
@@ -253,7 +253,7 @@ public class EMPAuthProvider {
         } catch (JSONException e0) {
             Log.e(TAG, "Password check error", e0);
             if(null != listener) {
-                listener.onAuthError(ExposureError.INVALID_JSON);
+                listener.onAuthError(Error.INVALID_JSON);
             }
         }
     }
@@ -269,14 +269,14 @@ public class EMPAuthProvider {
 
             ExposureClient.getInstance().postAsync(path, authRequest, new IExposureCallback() {
                 @Override
-                public void onCallCompleted(JSONObject response, ExposureError error) {
+                public void onCallCompleted(JSONObject response, Error error) {
                     parseAuthResponse(listener, response, error);
                 }
             });
         } catch (JSONException e0) {
             Log.e(TAG, "Authentication error", e0);
             if(null != listener) {
-                listener.onAuthError(ExposureError.INVALID_JSON);
+                listener.onAuthError(Error.INVALID_JSON);
             }
         }
     }
@@ -289,7 +289,7 @@ public class EMPAuthProvider {
 
             ExposureClient.getInstance().getAsync(path, new IExposureCallback() {
                 @Override
-                public void onCallCompleted(JSONObject response, ExposureError error) {
+                public void onCallCompleted(JSONObject response, Error error) {
                     if (error != null) {
                         if (listener != null) {
                             listener.onAuthError(error);
@@ -301,7 +301,7 @@ public class EMPAuthProvider {
             });
         } else {
             if (null != listener) {
-                listener.onAuthError(ExposureError.NO_SESSION_TOKEN);
+                listener.onAuthError(Error.NO_SESSION_TOKEN);
             }
         }
     }
@@ -313,7 +313,7 @@ public class EMPAuthProvider {
         if (isAuthenticated()){
             ExposureClient.getInstance().deleteAsync(path, new IExposureCallback() {
                 @Override
-                public void onCallCompleted(JSONObject response, ExposureError error) {
+                public void onCallCompleted(JSONObject response, Error error) {
                     ExposureClient.getInstance().setSessionToken("");
                     if (null != error) {
                         Log.e(TAG, "logout error:" + error.toString());

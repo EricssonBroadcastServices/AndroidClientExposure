@@ -1,9 +1,9 @@
 package net.ericsson.emovs.exposure.metadata.builders;
 
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.exposure.metadata.IMetadataCallback;
 import net.ericsson.emovs.exposure.models.EmpCustomer;
+import net.ericsson.emovs.utilities.Error;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +44,7 @@ public class MainConfigBuilder extends EmpBaseBuilder implements IExposureCallba
     }
 
     @Override
-    public void onCallCompleted(JSONObject response, ExposureError error) {
+    public void onCallCompleted(JSONObject response, Error error) {
         if (handleError(error)) {
             return;
         }

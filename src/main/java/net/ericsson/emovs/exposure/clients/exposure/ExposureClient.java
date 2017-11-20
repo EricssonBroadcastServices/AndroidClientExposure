@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
+import net.ericsson.emovs.utilities.Error;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,7 +138,7 @@ public class ExposureClient {
         } catch (IOException e) {
             Log.e(TAG, "GET error", e);
             if (null != callback) {
-                callback.onCallCompleted(null, ExposureError.NETWORK_ERROR);
+                callback.onCallCompleted(null, Error.NETWORK_ERROR);
             }
         }
     }
@@ -158,7 +159,7 @@ public class ExposureClient {
         catch (IOException e) {
             Log.e(TAG, "POST error", e);
             if (null != callback) {
-                callback.onCallCompleted(null, ExposureError.NETWORK_ERROR);
+                callback.onCallCompleted(null, Error.NETWORK_ERROR);
             }
         }
     }
@@ -180,7 +181,7 @@ public class ExposureClient {
         } catch (IOException e) {
             Log.e(TAG, "POST error", e);
             if (null != callback) {
-                callback.onCallCompleted(null, ExposureError.NETWORK_ERROR);
+                callback.onCallCompleted(null, Error.NETWORK_ERROR);
             }
         }
     }
@@ -201,7 +202,7 @@ public class ExposureClient {
         } catch (IOException e) {
             Log.e(TAG, "DELETE error", e);
             if (null != callback) {
-                callback.onCallCompleted(null, ExposureError.NETWORK_ERROR);
+                callback.onCallCompleted(null, Error.NETWORK_ERROR);
             }
         }
     }
@@ -311,17 +312,17 @@ public class ExposureClient {
         @Override
         protected void onPostExecute(ExposureResponse exposureResponse) {
             if (null != mCallback) {
-                ExposureError error = null;
+                Error error = null;
                 if (200 != exposureResponse.responseCode) {
                     try {
                         if (null != exposureResponse.responseBody) {
-                            error = ExposureError.fromJson(exposureResponse.responseBody);
+                            error = Error.fromJson(exposureResponse.responseBody);
                         } else {
-                            error = ExposureError.NETWORK_ERROR;
+                            error = Error.NETWORK_ERROR;
                         }
                     } catch (JSONException e) {
                         Log.e(TAG, "Error parsing error JSON", e);
-                        error = ExposureError.INVALID_JSON;
+                        error = Error.INVALID_JSON;
                     }
                 }
                 mCallback.onCallCompleted(exposureResponse.responseBody, error);

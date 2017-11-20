@@ -13,7 +13,6 @@ package net.ericsson.emovs.exposure.metadata;
  */
 
 import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
-import net.ericsson.emovs.exposure.clients.exposure.ExposureError;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.exposure.metadata.builders.AssetListBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.AutocompleteBuilder;
@@ -31,6 +30,7 @@ import net.ericsson.emovs.exposure.models.EmpChannel;
 import net.ericsson.emovs.exposure.models.EmpCustomer;
 import net.ericsson.emovs.exposure.models.EmpProgram;
 import net.ericsson.emovs.exposure.models.EmpSeries;
+import net.ericsson.emovs.utilities.Error;
 
 import java.util.ArrayList;
 
@@ -94,7 +94,7 @@ public class EMPMetadataProvider {
     private void makeRequest(final String path, final IExposureCallback listener) {
         ExposureClient exposureClient = ExposureClient.getInstance();
         if (exposureClient.getSessionToken() == null) {
-            listener.onCallCompleted(null, ExposureError.NO_SESSION_TOKEN);
+            listener.onCallCompleted(null, Error.NO_SESSION_TOKEN);
             return;
         }
         ExposureClient.getInstance().getAsync(path, listener);
