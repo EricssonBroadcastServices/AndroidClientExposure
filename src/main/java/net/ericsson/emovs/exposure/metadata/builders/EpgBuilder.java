@@ -3,8 +3,8 @@ package net.ericsson.emovs.exposure.metadata.builders;
 
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.exposure.metadata.IMetadataCallback;
-import net.ericsson.emovs.exposure.models.EmpProgram;
-import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.models.EmpProgram;
+import net.ericsson.emovs.utilities.errors.Error;
 
 import org.json.JSONArray;
 import org.json.JSONException;

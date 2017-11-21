@@ -13,7 +13,7 @@ package net.ericsson.emovs.exposure.metadata;
  */
 
 
-import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.errors.Error;
 
 public interface IMetadataCallback<M> {
     void onMetadata(M metadata);

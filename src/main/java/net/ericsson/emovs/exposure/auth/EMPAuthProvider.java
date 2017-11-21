@@ -19,8 +19,8 @@ import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
 import net.ericsson.emovs.exposure.interfaces.IAuthenticationListener;
 import net.ericsson.emovs.exposure.interfaces.ICredentialsStorageProvider;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
-import net.ericsson.emovs.utilities.EMPRegistry;
-import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.emp.EMPRegistry;
+import net.ericsson.emovs.utilities.errors.Error;
 
 import org.json.JSONException;
 import org.json.JSONObject;

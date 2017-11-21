@@ -1,8 +1,8 @@
 package net.ericsson.emovs.exposure.auth;
 
 import net.ericsson.emovs.exposure.interfaces.IAuthenticationListener;
-import net.ericsson.emovs.utilities.EMPRegistry;
-import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.emp.EMPRegistry;
+import net.ericsson.emovs.utilities.errors.Error;
 
 
 /**

@@ -3,9 +3,9 @@ package net.ericsson.emovs.exposure.metadata.builders;
 
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.exposure.metadata.IMetadataCallback;
-import net.ericsson.emovs.exposure.models.EmpEpisode;
-import net.ericsson.emovs.exposure.models.EmpSeries;
-import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.models.EmpEpisode;
+import net.ericsson.emovs.utilities.models.EmpSeries;
+import net.ericsson.emovs.utilities.errors.Error;
 
 import org.json.JSONArray;
 import org.json.JSONException;

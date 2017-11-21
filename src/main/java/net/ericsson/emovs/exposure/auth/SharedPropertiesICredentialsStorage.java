@@ -18,7 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import net.ericsson.emovs.exposure.interfaces.ICredentialsStorageProvider;
-import net.ericsson.emovs.utilities.EMPRegistry;
+import net.ericsson.emovs.utilities.emp.EMPRegistry;
 
 import org.json.JSONObject;
 

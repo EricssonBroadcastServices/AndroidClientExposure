@@ -13,7 +13,7 @@ package net.ericsson.emovs.exposure.interfaces;
  */
 
 
-import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.errors.Error;
 
 public interface IAuthenticationListener {
     void onAuthSuccess(String sessionToken);

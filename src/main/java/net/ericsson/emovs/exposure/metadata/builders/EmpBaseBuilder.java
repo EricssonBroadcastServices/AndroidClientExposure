@@ -1,11 +1,11 @@
 package net.ericsson.emovs.exposure.metadata.builders;
 
 import net.ericsson.emovs.exposure.metadata.IMetadataCallback;
-import net.ericsson.emovs.exposure.models.EmpAsset;
-import net.ericsson.emovs.exposure.models.EmpImage;
-import net.ericsson.emovs.exposure.models.EmpProgram;
-import net.ericsson.emovs.exposure.models.LocalizedMetadata;
-import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.models.EmpAsset;
+import net.ericsson.emovs.utilities.models.EmpImage;
+import net.ericsson.emovs.utilities.models.EmpProgram;
+import net.ericsson.emovs.utilities.models.LocalizedMetadata;
+import net.ericsson.emovs.utilities.errors.Error;
 
 import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;

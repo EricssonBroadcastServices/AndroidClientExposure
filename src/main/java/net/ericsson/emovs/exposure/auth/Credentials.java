@@ -11,7 +11,7 @@ package net.ericsson.emovs.exposure.auth;
  * THE PRODUCT.
  */
 
-import net.ericsson.emovs.utilities.DateTimeParser;
+import net.ericsson.emovs.utilities.time.DateTimeParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;

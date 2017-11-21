@@ -24,13 +24,13 @@ import net.ericsson.emovs.exposure.metadata.builders.SeriesBuilder;
 import net.ericsson.emovs.exposure.metadata.queries.ChannelsQueryParameters;
 import net.ericsson.emovs.exposure.metadata.queries.EpgQueryParameters;
 import net.ericsson.emovs.exposure.metadata.queries.SeriesQueryParameters;
-import net.ericsson.emovs.exposure.models.EmpAsset;
-import net.ericsson.emovs.exposure.models.EmpCarousel;
-import net.ericsson.emovs.exposure.models.EmpChannel;
-import net.ericsson.emovs.exposure.models.EmpCustomer;
-import net.ericsson.emovs.exposure.models.EmpProgram;
-import net.ericsson.emovs.exposure.models.EmpSeries;
-import net.ericsson.emovs.utilities.Error;
+import net.ericsson.emovs.utilities.models.EmpAsset;
+import net.ericsson.emovs.utilities.models.EmpCarousel;
+import net.ericsson.emovs.utilities.models.EmpChannel;
+import net.ericsson.emovs.utilities.models.EmpCustomer;
+import net.ericsson.emovs.utilities.models.EmpProgram;
+import net.ericsson.emovs.utilities.models.EmpSeries;
+import net.ericsson.emovs.utilities.errors.Error;
 
 import java.util.ArrayList;
 

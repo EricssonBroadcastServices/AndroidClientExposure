@@ -16,10 +16,10 @@ import android.util.Log;
 
 import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
-import net.ericsson.emovs.utilities.Entitlement;
-import net.ericsson.emovs.utilities.Error;
-import net.ericsson.emovs.utilities.IEntitlementProvider;
-import net.ericsson.emovs.utilities.IEntitlementCallback;
+import net.ericsson.emovs.utilities.entitlements.Entitlement;
+import net.ericsson.emovs.utilities.errors.Error;
+import net.ericsson.emovs.utilities.entitlements.IEntitlementProvider;
+import net.ericsson.emovs.utilities.entitlements.IEntitlementCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import net.ericsson.emovs.utilities.EMPRegistry;
+import net.ericsson.emovs.utilities.emp.EMPRegistry;
 
 import org.json.JSONObject;
 import org.junit.Test;
