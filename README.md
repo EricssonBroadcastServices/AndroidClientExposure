@@ -4,6 +4,7 @@
 * [Tutorials](#tutorials)
 * [License](https://github.com/EricssonBroadcastServices/AndroidClientExposure/blob/master/LICENSE)
 * [Requirements](#requirements)
+* [Dependencies](#dependencies)
 * [Installation](#installation)
 * [Documentation](https://jitpack.io/com/github/EricssonBroadcastServices/AndroidClientExposure/master-SNAPSHOT/javadoc/)
 * [Release Notes](#release-notes)
@@ -23,6 +24,10 @@
 ## Requirements
 
 * `Android` 4.4+
+
+## Dependencies
+
+- [AndroidClientUtilities](https://github.com/EricssonBroadcastServices/AndroidClientUtilities)
 
 ## Installation
 
