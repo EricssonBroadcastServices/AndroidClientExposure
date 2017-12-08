@@ -24,7 +24,7 @@ ext {
     releaseArtifact = 'empplayer-exposure'
     releaseVersion = 'r2.72.0'
     releaseDescription = 'The EMP Player library exposure module.'
-    libraryTag = 'r0.73.998'
+    libraryTag = 'master-SNAPSHOT'
 }
 
 android {
