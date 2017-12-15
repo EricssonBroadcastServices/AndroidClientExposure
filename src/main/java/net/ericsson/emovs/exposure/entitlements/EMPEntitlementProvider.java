@@ -28,6 +28,8 @@ import static java.util.UUID.randomUUID;
 
 public class EMPEntitlementProvider implements IEntitlementProvider {
     private static final String TAG = "EMPEntitlementProvider";
+    private static final String ABR_FORMAT = "DASH";
+    private static final String DRM_FORMAT = "CENC";
 
     private static class EmpEntitlementProviderHolder {
         private final static EMPEntitlementProvider sInstance = new EMPEntitlementProvider();
@@ -65,17 +67,18 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
             listener.onError(Error.NO_SESSION_TOKEN);
             return;
         }
-        ExposureClient.getInstance().postAsync(path, makePlayRequestParameters("CENC", "DASH"), new IExposureCallback() {
+        JSONObject requestParams = makePlayRequestParameters(DRM_FORMAT, ABR_FORMAT);
+        ExposureClient.getInstance().postAsync(path, requestParams, new IExposureCallback() {
             @Override
             public void onCallCompleted(JSONObject response, Error error) {
-                parseEntitlementResponse(listener, response, error);
+                parseEntitlementResponse(listener, response, error, DRM_FORMAT, ABR_FORMAT);
             }
         });
     }
 
     private void parseEntitlementResponse(final IEntitlementCallback callback,
                                           final JSONObject response,
-                                          final Error error) {
+                                          final Error error, String drmFormat, String abrFormat) {
         if (error != null) {
             if (callback != null) {
                 callback.onError(error);
@@ -87,7 +90,7 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
             final String assetId = callback.getAssetId();
             final String channelId = callback.getChannelId();
             final String programId = callback.getProgramId();
-            Entitlement entitlement = fromJson(assetId, channelId, programId, response);
+            Entitlement entitlement = fromJson(assetId, channelId, programId, response, drmFormat, abrFormat);
 
             if (entitlement != null) {
                 if(callback != null) {
@@ -106,7 +109,7 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
         }
     }
 
-    private Entitlement fromJson(String assetId, String channelId, String programId, JSONObject jsonObject) throws JSONException {
+    private Entitlement fromJson(String assetId, String channelId, String programId, JSONObject jsonObject, String drmFormat, String abrFormat) throws JSONException {
         Entitlement response = new Entitlement();
 
         response.assetId = assetId;
@@ -138,6 +141,15 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
 
         if (jsonObject.has("maxBitrate")) {
             response.maxBitrate = jsonObject.optInt("maxBitrate");
+        }
+
+        if ("CENC".equals(drmFormat) && jsonObject.has("cencConfig")) {
+            JSONObject cenc = jsonObject.getJSONObject("cencConfig");
+            response.licenseServerUrl = cenc.optString("com.widevine.alpha");
+            // TODO: implement drmInitDataBase64 when exposure provides it
+        }
+        else {
+            //TODO: implement when new requirements arrive
         }
 
         response.ffEnabled = jsonObject.optBoolean("ffEnabled", true);
