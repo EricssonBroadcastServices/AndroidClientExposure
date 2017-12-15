@@ -5,6 +5,8 @@ import net.ericsson.emovs.exposure.auth.Credentials;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -23,7 +25,8 @@ import static org.junit.Assert.*;
  * THE LICENSE STATEMENT AND LIMITED WARRANTY FURNISHED WITH
  * THE PRODUCT.
  */
-//@RunWith(AndroidJUnit4.class)
+
+@RunWith(RobolectricTestRunner.class)
 public class CredentialsTest {
     private final String AUTH_RESPONSE = "{\"sessionToken\":\"CD1X-tiIQ-x7vI-Zcsy-ZHNJ-olBO-6E|160304085954428|48000|cec24d6511aea8b5c3c6a839d4f1d0a4|1507128381911|1507153581000|false|WEB_blixtuser1|Alzhu4LhTd8XoFW6Iz8qUpFHtYUb9UtkPOQ9u7Npclw=\",\"crmToken\":\"CD1X-tiIQ-x7vI-Zcsy-ZHNJ-olBO-6E\",\"accountId\":\"160304085954428\",\"expirationDateTime\":\"2017-10-04T21:46:21.00Z\",\"accountStatus\":\"Active\"}";
 

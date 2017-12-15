@@ -1,14 +1,15 @@
 package net.ericsson.emovs.exposure.auth;
 
+import android.app.Activity;
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 
 import net.ericsson.emovs.utilities.emp.EMPRegistry;
 
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +24,8 @@ import static org.junit.Assert.*;
  * THE LICENSE STATEMENT AND LIMITED WARRANTY FURNISHED WITH
  * THE PRODUCT.
  */
-@RunWith(AndroidJUnit4.class)
+
+@RunWith(RobolectricTestRunner.class)
 public class SharedPropertiesCredentialsStorageTest {
     private final String API_URL = "https://exposure.emps.ebsd.ericsson.net/";
     final String CUSTOMER = "BlixtGroup";
@@ -38,7 +40,9 @@ public class SharedPropertiesCredentialsStorageTest {
 
     @Test
     public void testStoreCredentials() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        Activity activity = Robolectric.setupActivity(Activity.class);
+        Context appContext = activity.getApplicationContext();
+
         EMPRegistry.bindApplicationContext(appContext);
 
         SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance();
@@ -52,7 +56,9 @@ public class SharedPropertiesCredentialsStorageTest {
 
     @Test
     public void testDeleteCredentials() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        Activity activity = Robolectric.setupActivity(Activity.class);
+        Context appContext = activity.getApplicationContext();
+
         EMPRegistry.bindApplicationContext(appContext);
         SharedPropertiesICredentialsStorage sharedPropertiesCredentialsStorage = SharedPropertiesICredentialsStorage.getInstance();
         sharedPropertiesCredentialsStorage.storeCredentials(API_URL, CUSTOMER, BUSINESS_UNIT, Credentials.fromJSON(new JSONObject(AUTH_RESPONSE)));
