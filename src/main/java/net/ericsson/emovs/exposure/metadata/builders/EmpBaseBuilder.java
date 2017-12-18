@@ -38,41 +38,6 @@ public class EmpBaseBuilder {
         return false;
     }
 
-    protected String getLocalized(JSONObject obj, String locale, String property) throws JSONException {
-        JSONArray localized = obj.getJSONArray("localized");
-        String propertyToReturn = "";
-        for(int i = 0; i < localized.length(); ++i) {
-            JSONObject localeData = localized.getJSONObject(i);
-            String propLocale = localeData.getString("locale");
-            if(i == 0 && localeData.has(property)) {
-                propertyToReturn = localeData.getString(property);
-            }
-
-            if(locale.equals(propLocale) && localeData.has(property)) {
-                propertyToReturn = localeData.getString(property);
-            }
-        }
-
-        return propertyToReturn;
-    }
-
-    protected String getLocalized(JSONArray localized, String locale, String property) throws JSONException {
-        String propertyToReturn = "";
-        for(int i = 0; i < localized.length(); ++i) {
-            JSONObject localeData = localized.getJSONObject(i);
-            String propLocale = localeData.getString("locale");
-            if(i == 0) {
-                propertyToReturn = localeData.optString(property, "");
-            }
-
-            if(locale.equals(propLocale)) {
-                propertyToReturn = localeData.optString(property, "");
-            }
-        }
-
-        return propertyToReturn;
-    }
-
     protected void fillLocalized(JSONObject obj, LocalizedMetadata metadata) throws JSONException {
         JSONArray localized = obj.has("localized") ? obj.getJSONArray("localized") : obj.optJSONArray("titles");
         if (localized == null) {
@@ -92,43 +57,6 @@ public class EmpBaseBuilder {
             metadata.titles.put(propLocale, localeData.optString("title", null));
             metadata.descriptions.put(propLocale, localeData.optString("description", null));
         }
-    }
-
-    protected String getLocalizedImages(JSONObject obj, String locale, String imgType) throws JSONException {
-        JSONArray localized = obj.getJSONArray("localized");
-        JSONArray images = null;
-        String logoUrl = null;
-        for(int i = 0; i < localized.length(); ++i) {
-            JSONObject localeData = localized.getJSONObject(i);
-            String propLocale = localeData.getString("locale");
-            if(i == 0) {
-                images = localeData.getJSONArray("images");
-            }
-
-            if(locale.equals(propLocale)) {
-                images = localeData.getJSONArray("images");
-            }
-        }
-
-        if(images != null) {
-            for(int i = 0; i < images.length(); ++i) {
-                JSONObject imageData = images.getJSONObject(i);
-                if (imageData.has("type") == false) {
-                    continue;
-                }
-                String imgTypeData = imageData.getString("type");
-                if(i == 0) {
-                    logoUrl = imageData.getString("url");
-                }
-
-                if(imgType.equals(imgTypeData)) {
-                    logoUrl = imageData.getString("url");
-                }
-            }
-
-        }
-
-        return logoUrl;
     }
 
     public EmpAsset getAsset(JSONObject assetJson, EmpAsset asset, boolean checkEmptyMedias) throws JSONException {
@@ -158,7 +86,7 @@ public class EmpBaseBuilder {
         return asset;
     }
 
-    protected EmpProgram getProgram(JSONObject programJson, EmpProgram program) throws JSONException {
+    public EmpProgram getProgram(JSONObject programJson, EmpProgram program) throws JSONException {
         String startTimeStr = programJson.getString("startTime");
         String endTimeStr = programJson.getString("endTime");
         program.startDateTime = ISODateTimeFormat.dateTimeParser().parseDateTime(startTimeStr);

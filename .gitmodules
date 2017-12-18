@@ -1,3 +1,0 @@
-[submodule "libraries/utilities"]
-	path = libraries/utilities
-	url = https://github.com/EricssonBroadcastServices/AndroidClientUtilities.git
