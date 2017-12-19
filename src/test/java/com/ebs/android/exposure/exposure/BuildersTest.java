@@ -1,12 +1,15 @@
 package com.ebs.android.exposure.exposure;
 
 import net.ericsson.emovs.exposure.auth.Credentials;
+import net.ericsson.emovs.exposure.metadata.builders.AssetListBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.CarouselGroupBuilder;
+import net.ericsson.emovs.exposure.metadata.builders.ChannelsBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.EmpBaseBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.EpgBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.SeriesBuilder;
 import net.ericsson.emovs.utilities.models.EmpAsset;
 import net.ericsson.emovs.utilities.models.EmpCarousel;
+import net.ericsson.emovs.utilities.models.EmpChannel;
 import net.ericsson.emovs.utilities.models.EmpProgram;
 import net.ericsson.emovs.utilities.models.EmpSeries;
 
@@ -86,4 +89,19 @@ public class BuildersTest {
         assertTrue(epg.size() == 3);
     }
 
+    @Test
+    public void getAssetListTest() throws Exception {
+        String str = "{\"totalCount\":2,\"pageSize\":100,\"pageNumber\":1,\"items\":[{\"created\":\"2017-09-20T09:05:04.897Z\",\"changed\":\"2017-10-10T11:46:10.415Z\",\"assetId\":\"d8525e2d-4f2a-4fe1-9ea8-adbb531dc678_enigma\",\"type\":\"MOVIE\",\"localized\":[{\"locale\":\"en\",\"title\":\"stump\",\"images\":[{\"url\":\"https://azukifilesprestage.blob.core.windows.net/img/6e59033f3ebf23ea305b5e74457982ac/6e59033f3ebf23ea305b5e74457982ac.jpg\",\"height\":360,\"width\":480,\"orientation\":\"LANDSCAPE\",\"type\":\"poster\"}]},{\"locale\":\"sv\",\"title\":\"stump\",\"images\":[]}],\"tags\":[],\"publications\":[{\"publicationDate\":\"2017-09-20T09:15:08Z\",\"fromDate\":\"2017-09-20T09:16:27Z\",\"toDate\":\"2021-09-20T09:04:38Z\",\"countries\":[],\"services\":[\"pigeon\",\"web\",\"bike\"],\"products\":[\"EnigmaFVOD__DevGroup__EnigmaTV_enigma\",\"EnigmaFVOD_enigma\"],\"publicationId\":\"d8525e2d-4f2a-4fe1-9ea8-adbb531dc678publ_enigma\",\"customData\":{},\"devices\":[]}],\"participants\":[],\"popularityScores\":{\"1440\":\"0.2\",\"4320\":\"0.2\"},\"originalTitle\":\"2017 Specialized S-Works Stumpjumper FSR 6Fattie MTB test ride - The Singletrack Sampler\",\"live\":false,\"productionCountries\":[],\"subtitles\":[],\"audioTracks\":[],\"spokenLanguages\":[],\"medias\":[{\"mediaId\":\"5f2aaf3d-9135-49e8-be3f-f677adffc129_enigma\",\"drm\":\"EDRM\",\"format\":\"HLS\",\"durationMillis\":1089522,\"status\":\"enabled\"},{\"mediaId\":\"5f2aaf3d-9135-49e8-be3f-f677adffc129-cen-das_enigma\",\"drm\":\"CENC\",\"format\":\"DASH\",\"durationMillis\":1089522,\"status\":\"enabled\"},{\"mediaId\":\"5f2aaf3d-9135-49e8-be3f-f677adffc129-fai-hls_enigma\",\"drm\":\"FAIRPLAY\",\"format\":\"HLS\",\"durationMillis\":1089522,\"status\":\"enabled\"}],\"parentalRatings\":[],\"linkedEntities\":[],\"customData\":{},\"externalReferences\":[],\"userData\":{\"playHistory\":{\"lastViewedOffset\":313637,\"lastViewedTime\":1513243070775}}},{\"created\":\"2017-06-21T13:13:56.587Z\",\"assetId\":\"633d300d-2141-4e51-8ccd-f65062e3e257_enigma\",\"type\":\"MOVIE\",\"localized\":[{\"locale\":\"en\",\"title\":\"4321\",\"sortingTitle\":\"4321\",\"images\":[]}],\"tags\":[],\"publications\":[{\"publicationDate\":\"2017-06-21T13:13:55Z\",\"fromDate\":\"2017-06-21T13:13:55Z\",\"toDate\":\"2018-06-21T13:13:55Z\",\"countries\":[],\"services\":[],\"products\":[\"EnigmaFVOD_enigma\"],\"publicationId\":\"633d300d-2141-4e51-8ccd-f65062e3e257publ_enigma\",\"customData\":{},\"devices\":[]}],\"participants\":[],\"originalTitle\":\"4321\",\"live\":false,\"productionCountries\":[],\"subtitles\":[],\"audioTracks\":[],\"spokenLanguages\":[],\"medias\":[],\"parentalRatings\":[],\"linkedEntities\":[],\"runtime\":0,\"customData\":{},\"externalReferences\":[]}]}";
+        AssetListBuilder builder = new AssetListBuilder(null);
+        ArrayList<EmpAsset> assets = builder.getMetadata(new JSONObject(str));
+        assertTrue(assets.size() == 1);
+    }
+
+    @Test
+    public void getChannelListTest() throws Exception {
+        String str = "{\"totalCount\":2,\"pageSize\":100,\"pageNumber\":1,\"items\":[{\"created\":\"2017-11-20T16:09:55.738Z\",\"changed\":\"2017-12-18T09:55:55.287Z\",\"assetId\":\"ch01_enigma\",\"type\":\"TV_CHANNEL\",\"localized\":[{\"locale\":\"en\",\"title\":\"Enigma 01\",\"images\":[{\"url\":\"https://azukifilesprestage.blob.core.windows.net/img/41ef468405cdd8a7544077f4a795c2c7/41ef468405cdd8a7544077f4a795c2c7.png\",\"height\":700,\"width\":700,\"orientation\":\"SQUARE\",\"type\":\"thumbnail\"}]},{\"locale\":\"sv\",\"title\":\"Enigma 01\",\"sortingTitle\":\"01\",\"images\":[]}],\"tags\":[],\"publications\":[{\"publicationDate\":\"2017-11-20T16:12:19.581Z\",\"fromDate\":\"2017-11-20T16:12:19.581Z\",\"toDate\":\"2099-11-27T16:12:19Z\",\"countries\":[],\"services\":[],\"products\":[\"EnigmaFVOD_enigma\"],\"publicationId\":\"e84b7735-20a2-4631-b803-59aefe0d144a_enigma\",\"customData\":{},\"devices\":[]}],\"participants\":[],\"originalTitle\":\"Enigma 1\",\"live\":false,\"productionCountries\":[],\"subtitles\":[],\"audioTracks\":[],\"spokenLanguages\":[],\"medias\":[{\"mediaId\":\"ch01-cen-das_enigma\",\"drm\":\"CENC\",\"format\":\"DASH\",\"status\":\"enabled\"},{\"mediaId\":\"ch01-une-hls_enigma\",\"drm\":\"UNENCRYPTED\",\"format\":\"HLS\",\"status\":\"enabled\"},{\"mediaId\":\"ch01_enigma\",\"drm\":\"EDRM\",\"format\":\"HLS\",\"status\":\"enabled\"}],\"parentalRatings\":[],\"linkedEntities\":[],\"customData\":{},\"externalReferences\":[]},{\"created\":\"2017-11-20T16:10:36.718Z\",\"changed\":\"2017-12-18T09:42:51.788Z\",\"assetId\":\"ch02_enigma\",\"type\":\"TV_CHANNEL\",\"localized\":[{\"locale\":\"en\",\"title\":\"Enigma 02\",\"images\":[{\"url\":\"https://azukifilesprestage.blob.core.windows.net/img/52366c64ea117aca36d9add9145e0a61/52366c64ea117aca36d9add9145e0a61.png\",\"height\":700,\"width\":700,\"orientation\":\"SQUARE\",\"type\":\"thumbnail\"}]},{\"locale\":\"sv\",\"title\":\"Enigma 02\",\"sortingTitle\":\"02\",\"images\":[]}],\"tags\":[],\"publications\":[{\"publicationDate\":\"2017-11-20T16:15:44.034Z\",\"fromDate\":\"2017-11-20T16:15:44.034Z\",\"toDate\":\"2099-11-27T16:15:44Z\",\"countries\":[],\"services\":[],\"products\":[\"EnigmaFVOD_enigma\"],\"publicationId\":\"0ddee894-08cc-4d9b-bb19-31096669e254_enigma\",\"customData\":{},\"devices\":[]}],\"participants\":[],\"originalTitle\":\"Enigma 2\",\"live\":false,\"productionCountries\":[],\"subtitles\":[],\"audioTracks\":[],\"spokenLanguages\":[],\"medias\":[{\"mediaId\":\"ch02-cen-das_enigma\",\"drm\":\"CENC\",\"format\":\"DASH\",\"status\":\"enabled\"},{\"mediaId\":\"ch02_enigma\",\"drm\":\"EDRM\",\"format\":\"HLS\",\"status\":\"enabled\"}],\"parentalRatings\":[],\"linkedEntities\":[],\"customData\":{},\"externalReferences\":[]}]}";
+        ChannelsBuilder builder = new ChannelsBuilder(null);
+        ArrayList<EmpChannel> channels = builder.getMetadata(new JSONObject(str));
+        assertTrue(channels.size() == 2);
+    }
 }
