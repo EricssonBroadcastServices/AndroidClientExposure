@@ -55,9 +55,9 @@ public class EMPAuthProvider {
         mICredentialsStorageProvider = storageProvider;
         mCredentials = storageProvider.getCredentials();
         ExposureClient exposureClient = ExposureClient.getInstance();
-        exposureClient.setExposureUrl(storageProvider.getExposureUrl());
+        /*exposureClient.setExposureUrl(storageProvider.getExposureUrl());
         exposureClient.setCustomer(storageProvider.getCustomer());
-        exposureClient.setBusinessUnit(storageProvider.getBusinessUnit());
+        exposureClient.setBusinessUnit(storageProvider.getBusinessUnit());*/
         if (mCredentials != null) {
             exposureClient.setSessionToken(mCredentials.getSessionToken());
         }

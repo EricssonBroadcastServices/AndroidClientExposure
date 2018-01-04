@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
+import net.ericsson.emovs.utilities.emp.EMPRegistry;
 import net.ericsson.emovs.utilities.errors.Error;
 
 import org.json.JSONArray;
@@ -42,9 +43,9 @@ public class ExposureClient {
     private final static int HTTP_CONNECT_TIMEOUT = 4000;
     private final static int HTTP_READ_TIMEOUT = 10000;
 
-    private String mExposureUrl;
-    private String mCustomer;
-    private String mBusinessUnit;
+    //private String mExposureUrl;
+    //private String mCustomer;
+    //private String mBusinessUnit;
     private String mSessionToken;
 
     private static class EmpExposureClientHolder {
@@ -59,28 +60,28 @@ public class ExposureClient {
     }
 
     public String getExposureUrl() {
-        return mExposureUrl;
+        return EMPRegistry.apiUrl();
     }
 
-    public void setExposureUrl(String exposureUrl) {
-        mExposureUrl = exposureUrl;
-    }
+    //public void setExposureUrl(String exposureUrl) {
+    //    mExposureUrl = exposureUrl;
+    //}
 
     public String getCustomer() {
-        return mCustomer;
+        return EMPRegistry.customer();
     }
 
-    public void setCustomer(String customer) {
-        mCustomer = customer;
-    }
+    //public void setCustomer(String customer) {
+    //    mCustomer = customer;
+    //}
 
     public String getBusinessUnit() {
-        return mBusinessUnit;
+        return EMPRegistry.businessUnit();
     }
 
-    public void setBusinessUnit(String businessUnit) {
-        mBusinessUnit = businessUnit;
-    }
+    //public void setBusinessUnit(String businessUnit) {
+    //    mBusinessUnit = businessUnit;
+    //}
 
     public String getSessionToken() {
         return mSessionToken;
@@ -91,19 +92,19 @@ public class ExposureClient {
     }
 
     private URL getApiUrl() throws MalformedURLException {
-        if (null == mExposureUrl) {
+        if (null == getExposureUrl()) {
             throw new IllegalArgumentException("Exposure URL not set");
         }
 
-        if (null == mCustomer) {
+        if (null == getCustomer()) {
             throw new IllegalArgumentException("Customer name not set");
         }
 
-        if (null == mBusinessUnit) {
+        if (null == getBusinessUnit()) {
             throw new IllegalArgumentException("Business Unit not set");
         }
 
-        return new URL(new URL(mExposureUrl), String.format(BASE_PATH, mCustomer, mBusinessUnit));
+        return new URL(new URL(getExposureUrl()), String.format(BASE_PATH, getCustomer(), getBusinessUnit()));
     }
 
     private HttpURLConnection getHttpURLConnection(URL url) throws IOException {
@@ -137,6 +138,85 @@ public class ExposureClient {
 
         } catch (IOException e) {
             Log.e(TAG, "GET error", e);
+            if (null != callback) {
+                callback.onCallCompleted(null, Error.NETWORK_ERROR);
+            }
+        }
+    }
+
+    public void getSync(String url, IExposureCallback callback) {
+        try {
+            URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
+
+            HttpURLConnection connection = getHttpURLConnection(apiUrl);
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(false);
+
+            Log.d(TAG, "[" + this.hashCode() + "] " + connection.getRequestMethod() + " " + connection.getURL().toString());
+            ExposureResponse response = new ExposureResponse();
+            try {
+                connection.connect();
+                response.responseCode = connection.getResponseCode();
+
+                if (connection.getDoInput()) {
+                    StringBuilder strResponse = new StringBuilder();
+                    InputStream responseStream = (response.responseCode != 200) ? connection.getErrorStream() : connection.getInputStream();
+                    try {
+                        BufferedReader br = new BufferedReader(new InputStreamReader(responseStream, "UTF-8"));
+                        try {
+                            String line;
+                            while (null != (line = br.readLine())) {
+                                strResponse.append(line);
+                            }
+                        } catch (Exception ex) {
+                            Log.e(TAG, "[" + this.hashCode() + "] Network error", ex);
+                        } finally {
+                            try {
+                                br.close();
+                            } catch (Exception ignored) {
+                            }
+                        }
+                    } catch (Exception ex) {
+                        Log.e(TAG, "[" + this.hashCode() + "] Network error", ex);
+                    } finally {
+                        try {
+                            responseStream.close();
+                        } catch (Exception ignored) {
+                        }
+                    }
+
+                    try {
+                        response.responseBody = new JSONObject(strResponse.toString());
+                    }
+                    catch(Exception e) {
+                        JSONArray responseArray = new JSONArray(strResponse.toString());
+                        response.responseBody = new JSONObject().put("items", responseArray);
+                    }
+                }
+                Log.d(TAG, "[" + this.hashCode() + "] " + response.responseCode + " " + response.responseBody);
+            } catch (Exception ex) {
+                Log.e(TAG, "[" + this.hashCode() + "] Network error", ex);
+            }
+
+            if (null != callback) {
+                Error error = null;
+                if (200 != response.responseCode) {
+                    try {
+                        if (null != response.responseBody) {
+                            error = Error.fromJson(response.responseBody);
+                        } else {
+                            error = Error.NETWORK_ERROR;
+                        }
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Error parsing error JSON", e);
+                        error = Error.INVALID_JSON;
+                    }
+                }
+                callback.onCallCompleted(response.responseBody, error);
+            }
+        }
+        catch (IOException e) {
+            Log.e(TAG, "POST error", e);
             if (null != callback) {
                 callback.onCallCompleted(null, Error.NETWORK_ERROR);
             }
