@@ -116,6 +116,11 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
         response.channelId = channelId;
         response.programId = programId;
         response.mediaLocator = jsonObject.getString("mediaLocator");
+
+        if (response.mediaLocator.contains(".isml")) {
+            response.isUnifiedStream = true;
+        }
+
         response.entitlementType = jsonObject.getString("entitlementType");
         response.accountId = jsonObject.optString("accountId", null);
         response.isLive = jsonObject.optBoolean("live", false);
