@@ -56,6 +56,13 @@ public class EMPMetadataProvider {
         makeRequest("/content/season?includeEpisodes=" + params.includeEpisodes(), new SeriesBuilder(callback));
     }
 
+    public void getEpgWithTime(String channelId, long epgTimeNowMs, IMetadataCallback<ArrayList<EmpProgram>> callback, EpgQueryParameters params) {
+        long nowMs = epgTimeNowMs;
+        long from = nowMs - params.getPastTimeFrame();
+        long to = nowMs + params.getFutureTimeFrame();
+        makeRequest("/epg/" + channelId + "?from=" + from + "&to=" + to + "&pageSize=" + params.getPageSize(), new EpgBuilder(callback));
+    }
+
     public void getEpg(String channelId, IMetadataCallback<ArrayList<EmpProgram>> callback, EpgQueryParameters params) {
         long nowMs = System.currentTimeMillis();
         long from = nowMs - params.getPastTimeFrame();

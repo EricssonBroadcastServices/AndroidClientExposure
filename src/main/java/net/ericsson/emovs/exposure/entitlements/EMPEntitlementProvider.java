@@ -21,6 +21,7 @@ import net.ericsson.emovs.utilities.errors.Error;
 import net.ericsson.emovs.utilities.entitlements.IEntitlementProvider;
 import net.ericsson.emovs.utilities.entitlements.IEntitlementCallback;
 
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,6 +41,54 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
     }
 
     protected EMPEntitlementProvider() {
+    }
+
+    @Override
+    public boolean isEntitled(String mediaId) {
+        try {
+            ExposureClient exposureClient = ExposureClient.getInstance();
+
+            if (exposureClient.getSessionToken() == null) {
+                return false;
+            }
+
+            String url = "/entitlement/" + mediaId + "?drm=" + DRM_FORMAT + "&format=" + ABR_FORMAT;
+
+            EntitlementCheckClass exposureCallback = new EntitlementCheckClass() {
+                boolean isEntitled;
+                @Override
+                public void onCallCompleted(JSONObject response, Error error) {
+                    if (error != null) {
+                        isEntitled = false;
+                        return;
+                    }
+
+                    String status = response.optString("status", "ERROR");
+
+                    if("SUCCESS".equals(status)) {
+                        this.isEntitled = true;
+                    }
+                    else if("NOT_ENTITLED".equals(status)) {
+                        this.isEntitled = false;
+                    }
+                    else {
+                        this.isEntitled = false;
+                    }
+                }
+
+                @Override
+                public boolean isEntitled() {
+                    return this.isEntitled;
+                }
+            };
+
+            ExposureClient.getInstance().getSync(url, exposureCallback);
+            return exposureCallback.isEntitled();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -174,5 +223,9 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private abstract class EntitlementCheckClass implements IExposureCallback {
+        abstract boolean isEntitled();
     }
 }
