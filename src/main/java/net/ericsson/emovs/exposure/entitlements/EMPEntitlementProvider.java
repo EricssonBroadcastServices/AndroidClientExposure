@@ -44,6 +44,58 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
     }
 
     @Override
+    public void isEntitledAsync(String mediaId, final Runnable onEntitled, final Runnable onNotEntitled) {
+        try {
+            ExposureClient exposureClient = ExposureClient.getInstance();
+
+            if (exposureClient.getSessionToken() == null) {
+                if (onNotEntitled != null) {
+                    onNotEntitled.run();
+                }
+                return;
+            }
+
+            String url = "/entitlement/" + mediaId + "?drm=" + DRM_FORMAT + "&format=" + ABR_FORMAT;
+
+            IExposureCallback exposureCallback = new IExposureCallback() {
+                boolean isEntitled;
+                @Override
+                public void onCallCompleted(JSONObject response, Error error) {
+                    if (error != null) {
+                        isEntitled = false;
+                        return;
+                    }
+
+                    String status = response.optString("status", "ERROR");
+
+                    if("SUCCESS".equals(status)) {
+                        this.isEntitled = true;
+                    }
+                    else if("NOT_ENTITLED".equals(status)) 8{
+                        this.isEntitled = false;
+                    }
+                    else {
+                        this.isEntitled = false;
+                    }
+
+                    if (this.isEntitled && onEntitled != null) {
+                        onEntitled.run();
+                        return;
+                    }
+                    if (!this.isEntitled && onNotEntitled != null) {
+                        onNotEntitled.run();
+                    }
+                }
+            };
+
+            ExposureClient.getInstance().getAsync(url, exposureCallback);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public boolean isEntitled(String mediaId) {
         try {
             ExposureClient exposureClient = ExposureClient.getInstance();

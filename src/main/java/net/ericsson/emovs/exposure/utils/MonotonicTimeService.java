@@ -2,9 +2,11 @@ package net.ericsson.emovs.exposure.utils;
 
 import android.content.Context;
 
+import net.ericsson.emovs.exposure.auth.EMPAuthProvider;
 import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
 import net.ericsson.emovs.exposure.entitlements.EMPEntitlementProvider;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
+import net.ericsson.emovs.utilities.emp.EMPRegistry;
 import net.ericsson.emovs.utilities.errors.Error;
 
 import org.joda.time.DateTime;
@@ -21,6 +23,23 @@ public class MonotonicTimeService extends Thread {
     long serverStartTime;
     long localStartTime;
     boolean running;
+
+    private static class MonotonicTimeServiceHolder {
+        private final static MonotonicTimeService sInstance = new MonotonicTimeService();
+    }
+
+    public static MonotonicTimeService getInstance() {
+        if (!MonotonicTimeServiceHolder.sInstance.isAlive()) {
+            MonotonicTimeServiceHolder.sInstance.start();
+        }
+        return MonotonicTimeServiceHolder.sInstance;
+    }
+
+    public static void destroyInstance() {
+        if (MonotonicTimeServiceHolder.sInstance.isAlive() && !MonotonicTimeServiceHolder.sInstance.isInterrupted()) {
+            MonotonicTimeServiceHolder.sInstance.interrupt();
+        }
+    }
 
     public MonotonicTimeService() {
 
