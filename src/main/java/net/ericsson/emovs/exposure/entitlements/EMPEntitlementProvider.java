@@ -20,6 +20,8 @@ import net.ericsson.emovs.utilities.entitlements.Entitlement;
 import net.ericsson.emovs.utilities.errors.Error;
 import net.ericsson.emovs.utilities.entitlements.IEntitlementProvider;
 import net.ericsson.emovs.utilities.entitlements.IEntitlementCallback;
+import net.ericsson.emovs.utilities.errors.ErrorCodes;
+import net.ericsson.emovs.utilities.errors.ErrorRunnable;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -44,13 +46,13 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
     }
 
     @Override
-    public void isEntitledAsync(String mediaId, final Runnable onEntitled, final Runnable onNotEntitled) {
+    public void isEntitledAsync(String mediaId, final Runnable onEntitled, final ErrorRunnable onNotEntitled) {
         try {
             ExposureClient exposureClient = ExposureClient.getInstance();
 
             if (exposureClient.getSessionToken() == null) {
                 if (onNotEntitled != null) {
-                    onNotEntitled.run();
+                    onNotEntitled.run(ErrorCodes.PLAYBACK_NOT_ENTITLED, "No session token set.");
                 }
                 return;
             }
@@ -71,7 +73,7 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
                     if("SUCCESS".equals(status)) {
                         this.isEntitled = true;
                     }
-                    else if("NOT_ENTITLED".equals(status)) 8{
+                    else if("NOT_ENTITLED".equals(status)) {
                         this.isEntitled = false;
                     }
                     else {
@@ -83,7 +85,7 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
                         return;
                     }
                     if (!this.isEntitled && onNotEntitled != null) {
-                        onNotEntitled.run();
+                        onNotEntitled.run(ErrorCodes.PLAYBACK_NOT_ENTITLED, "User not entitled");
                     }
                 }
             };
