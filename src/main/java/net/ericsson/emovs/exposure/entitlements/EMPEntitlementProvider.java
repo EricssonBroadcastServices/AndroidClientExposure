@@ -263,6 +263,15 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
         response.ffEnabled = jsonObject.optBoolean("ffEnabled", true);
         response.rwEnabled = jsonObject.optBoolean("rwEnabled", true);
         response.lastViewedOffset = jsonObject.optLong("lastViewedOffset", 0);
+
+        if (jsonObject.has("lastViewedTime")) {
+            response.lastViewedTime = jsonObject.optLong("lastViewedTime");
+        }
+
+        if (jsonObject.has("liveTime")) {
+            response.liveTime = jsonObject.optLong("liveTime");
+        }
+
         response.productId = jsonObject.optString("productId", null);
 
         return response;
