@@ -18,6 +18,7 @@ import net.ericsson.emovs.exposure.metadata.builders.AssetListBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.AutocompleteBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.CarouselGroupBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.ChannelsBuilder;
+import net.ericsson.emovs.exposure.metadata.builders.EmpProgramBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.EpgBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.MainConfigBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.SeriesBuilder;
@@ -54,6 +55,10 @@ public class EMPMetadataProvider {
 
     public void getSeries(final IMetadataCallback<ArrayList<EmpSeries>> callback, SeriesQueryParameters params) {
         makeRequest("/content/season?includeEpisodes=" + params.includeEpisodes(), new SeriesBuilder(callback));
+    }
+
+    public void getProgramDetails(String channelId, String programId, IMetadataCallback<EmpProgram> callback) {
+        makeRequest("/epg/" + channelId + "/program/" + programId, new EmpProgramBuilder(callback));
     }
 
     public void getEpgWithTime(String channelId, long epgTimeNowMs, IMetadataCallback<ArrayList<EmpProgram>> callback, EpgQueryParameters params) {
