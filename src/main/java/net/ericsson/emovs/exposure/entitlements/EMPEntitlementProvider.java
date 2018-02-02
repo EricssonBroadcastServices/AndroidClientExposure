@@ -16,6 +16,7 @@ import android.util.Log;
 
 import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
+import net.ericsson.emovs.utilities.emp.UniversalPackagerHelper;
 import net.ericsson.emovs.utilities.entitlements.Entitlement;
 import net.ericsson.emovs.utilities.errors.Error;
 import net.ericsson.emovs.utilities.entitlements.IEntitlementProvider;
@@ -220,7 +221,7 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
         response.programId = programId;
         response.mediaLocator = jsonObject.getString("mediaLocator");
 
-        if (response.mediaLocator.contains(".isml")) {
+        if (UniversalPackagerHelper.isUniversalPackager(response.mediaLocator)) {
             response.isUnifiedStream = true;
         }
 
