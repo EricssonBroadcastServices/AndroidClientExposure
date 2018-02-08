@@ -56,7 +56,7 @@ public class ExposureClient {
         return EmpExposureClientHolder.sInstance;
     }
 
-    private ExposureClient() {
+    protected ExposureClient() {
     }
 
     public String getExposureUrl() {
