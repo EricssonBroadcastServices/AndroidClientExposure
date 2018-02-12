@@ -20,7 +20,7 @@ public class EmpProgramBuilder extends EmpBaseBuilder implements IExposureCallba
         super(listener);
     }
 
-    public ArrayList<EmpProgram> getMetadata(JSONObject programJson) {
+    public EmpProgram getMetadata(JSONObject programJson) {
         ArrayList<EmpProgram> programs = new ArrayList<EmpProgram>();
 
         try {
@@ -30,14 +30,13 @@ public class EmpProgramBuilder extends EmpBaseBuilder implements IExposureCallba
             if (program != null) {
                 this.getProgram(programJson, program);
                 program.channelId = programJson.optString("channelId");
-                programs.add(program);
+                return program;
             }
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
-
-        return programs;
+        return null;
     }
 
     @Override
