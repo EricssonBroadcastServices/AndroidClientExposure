@@ -1,6 +1,6 @@
 package net.ericsson.emovs.exposure.metadata.builders;
 
-import net.ericsson.emovs.exposure.metadata.IMetadataCallback;
+import net.ericsson.emovs.utilities.interfaces.IMetadataCallback;
 import net.ericsson.emovs.utilities.models.EmpAsset;
 import net.ericsson.emovs.utilities.models.EmpImage;
 import net.ericsson.emovs.utilities.models.EmpProgram;

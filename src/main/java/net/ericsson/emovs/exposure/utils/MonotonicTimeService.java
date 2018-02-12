@@ -8,6 +8,7 @@ import net.ericsson.emovs.exposure.entitlements.EMPEntitlementProvider;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.utilities.emp.EMPRegistry;
 import net.ericsson.emovs.utilities.errors.Error;
+import net.ericsson.emovs.utilities.interfaces.IMonotonicTimeService;
 
 import org.joda.time.DateTime;
 import org.json.JSONObject;
@@ -16,7 +17,7 @@ import org.json.JSONObject;
  * Created by Joao Coelho on 2018-01-03.
  */
 
-public class MonotonicTimeService extends Thread {
+public class MonotonicTimeService extends Thread implements IMonotonicTimeService {
     long REFRESH_INTERVAL = 60000 * 30;
     long EXPOSURE_DOWN_INTERVAL = 1000;
 
@@ -75,6 +76,7 @@ public class MonotonicTimeService extends Thread {
         }
     }
 
+    @Override
     public Long currentTime() {
         try {
             int n = 0;

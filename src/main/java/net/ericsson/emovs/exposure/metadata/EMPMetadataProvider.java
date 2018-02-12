@@ -22,9 +22,11 @@ import net.ericsson.emovs.exposure.metadata.builders.EmpProgramBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.EpgBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.MainConfigBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.SeriesBuilder;
-import net.ericsson.emovs.exposure.metadata.queries.ChannelsQueryParameters;
-import net.ericsson.emovs.exposure.metadata.queries.EpgQueryParameters;
-import net.ericsson.emovs.exposure.metadata.queries.SeriesQueryParameters;
+import net.ericsson.emovs.utilities.interfaces.IMetadataCallback;
+import net.ericsson.emovs.utilities.interfaces.IMetadataProvider;
+import net.ericsson.emovs.utilities.queries.ChannelsQueryParameters;
+import net.ericsson.emovs.utilities.queries.EpgQueryParameters;
+import net.ericsson.emovs.utilities.queries.SeriesQueryParameters;
 import net.ericsson.emovs.utilities.models.EmpAsset;
 import net.ericsson.emovs.utilities.models.EmpCarousel;
 import net.ericsson.emovs.utilities.models.EmpChannel;
@@ -35,7 +37,7 @@ import net.ericsson.emovs.utilities.errors.Error;
 
 import java.util.ArrayList;
 
-public class EMPMetadataProvider {
+public class EMPMetadataProvider implements IMetadataProvider {
     private static final String TAG = "EMPMetadataProvider";
 
     private static class EMPMediaMetadataProviderHolder {
