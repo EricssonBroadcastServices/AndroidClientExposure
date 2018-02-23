@@ -1,10 +1,9 @@
 package com.ebs.android.exposure.exposure;
 
-import net.ericsson.emovs.exposure.auth.Credentials;
 import net.ericsson.emovs.exposure.metadata.builders.AssetListBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.CarouselGroupBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.ChannelsBuilder;
-import net.ericsson.emovs.exposure.metadata.builders.EmpBaseBuilder;
+import net.ericsson.emovs.utilities.metadata.EmpBaseBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.EpgBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.SeriesBuilder;
 import net.ericsson.emovs.utilities.models.EmpAsset;
@@ -14,15 +13,11 @@ import net.ericsson.emovs.utilities.models.EmpProgram;
 import net.ericsson.emovs.utilities.models.EmpSeries;
 
 import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

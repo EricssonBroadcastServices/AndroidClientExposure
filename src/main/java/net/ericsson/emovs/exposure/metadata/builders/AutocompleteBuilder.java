@@ -4,6 +4,7 @@ package net.ericsson.emovs.exposure.metadata.builders;
 
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.utilities.interfaces.IMetadataCallback;
+import net.ericsson.emovs.utilities.metadata.EmpBaseBuilder;
 import net.ericsson.emovs.utilities.models.EmpAsset;
 import net.ericsson.emovs.utilities.errors.Error;
 

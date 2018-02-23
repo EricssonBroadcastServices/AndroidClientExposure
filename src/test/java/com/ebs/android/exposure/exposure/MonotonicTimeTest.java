@@ -1,13 +1,8 @@
 package com.ebs.android.exposure.exposure;
 
-import android.os.Looper;
-
-import net.ericsson.emovs.exposure.metadata.builders.EmpBaseBuilder;
 import net.ericsson.emovs.exposure.utils.MonotonicTimeService;
 import net.ericsson.emovs.utilities.emp.EMPRegistry;
-import net.ericsson.emovs.utilities.models.EmpAsset;
 
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
