@@ -228,8 +228,10 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
         response.entitlementType = jsonObject.getString("entitlementType");
         response.accountId = jsonObject.optString("accountId", null);
         response.isLive = jsonObject.optBoolean("live", false);
-        response.playToken = jsonObject.getString("playToken");
 
+        if (jsonObject.has("playToken")) {
+            response.playToken = jsonObject.getString("playToken");
+        }
 
         if(jsonObject.has("edrmConfig")) {
             JSONObject edrmConfig = jsonObject.getJSONObject("edrmConfig");
