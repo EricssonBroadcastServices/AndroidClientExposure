@@ -1,10 +1,6 @@
 # CHANGELOG
 
-* `0.67.x` Releases - [0.67.1](#0671)
+## 2.0.79
 
-## 0.67.1
-Released 13 Sep 2017
-
-#### Features
-* Adding authentication methods
-* Project created
+### New features and Enhancements
+- playToken in entitlement response is now optional
