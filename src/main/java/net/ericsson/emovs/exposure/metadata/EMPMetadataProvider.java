@@ -22,6 +22,7 @@ import net.ericsson.emovs.exposure.metadata.builders.EmpProgramBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.EpgBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.MainConfigBuilder;
 import net.ericsson.emovs.exposure.metadata.builders.SeriesBuilder;
+import net.ericsson.emovs.exposure.metadata.cache.EPGCache;
 import net.ericsson.emovs.utilities.interfaces.IMetadataCallback;
 import net.ericsson.emovs.utilities.interfaces.IMetadataProvider;
 import net.ericsson.emovs.utilities.queries.ChannelsQueryParameters;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 
 public class EMPMetadataProvider implements IMetadataProvider {
     private static final String TAG = "EMPMetadataProvider";
+    public EPGCache epgCache;
 
     private static class EMPMediaMetadataProviderHolder {
         private final static EMPMetadataProvider sInstance = new EMPMetadataProvider();
@@ -49,6 +51,7 @@ public class EMPMetadataProvider implements IMetadataProvider {
     }
 
     protected EMPMetadataProvider() {
+        epgCache = new EPGCache();
     }
 
     public void getSeries(IMetadataCallback<ArrayList<EmpSeries>> callback) {
@@ -61,6 +64,42 @@ public class EMPMetadataProvider implements IMetadataProvider {
 
     public void getProgramDetails(String channelId, String programId, IMetadataCallback<EmpProgram> callback) {
         makeRequest("/epg/" + channelId + "/program/" + programId, new EmpProgramBuilder(callback));
+    }
+
+    public void getEpgCacheFirst(final String channelId, final long epgTimeNowMs, final IMetadataCallback<ArrayList<EmpProgram>> callback, EpgQueryParameters params) {
+        if (params == null) {
+            params = EpgQueryParameters.DEFAULT;
+        }
+        IMetadataCallback cacheListener = new IMetadataCallback<ArrayList<EmpProgram>>() {
+            @Override
+            public void onMetadata(ArrayList<EmpProgram> metadata) {
+                epgCache.update(channelId, metadata);
+                if (callback != null) {
+                    ArrayList<EmpProgram> newMetadata = epgCache.getByTime(epgTimeNowMs);
+                    callback.onMetadata(newMetadata);
+                }
+            }
+
+            @Override
+            public void onError(Error error) {
+                callback.onError(error);
+            }
+        };
+
+        params.setPastTimeFrame(60 * 60 * 1000);
+        params.setFutureTimeFrame(60 * 60 * 1000);
+        long from = epgTimeNowMs - params.getPastTimeFrame();
+        long to = epgTimeNowMs + params.getFutureTimeFrame();
+
+        if (epgCache.shouldRefresh(channelId, epgTimeNowMs)) {
+            makeRequest("/epg/" + channelId + "?from=" + from + "&to=" + to + "&pageSize=" + params.getPageSize(), new EpgBuilder(cacheListener));
+            return;
+        }
+
+        if (callback != null) {
+            ArrayList<EmpProgram> cachedPrograms = epgCache.getByTime(epgTimeNowMs);
+            callback.onMetadata(cachedPrograms);
+        }
     }
 
     public void getEpgWithTime(String channelId, long epgTimeNowMs, IMetadataCallback<ArrayList<EmpProgram>> callback, EpgQueryParameters params) {
