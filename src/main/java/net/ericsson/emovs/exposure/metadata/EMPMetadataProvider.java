@@ -68,7 +68,7 @@ public class EMPMetadataProvider implements IMetadataProvider {
 
     public void getEpgCacheFirst(final String channelId, final long epgTimeNowMs, final IMetadataCallback<ArrayList<EmpProgram>> callback, EpgQueryParameters params) {
         if (params == null) {
-            params = EpgQueryParameters.DEFAULT;
+            params = EpgQueryParameters.DEFAULT.clone();
         }
         IMetadataCallback cacheListener = new IMetadataCallback<ArrayList<EmpProgram>>() {
             @Override
