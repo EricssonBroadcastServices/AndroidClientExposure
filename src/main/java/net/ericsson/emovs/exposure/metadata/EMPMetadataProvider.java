@@ -82,7 +82,9 @@ public class EMPMetadataProvider implements IMetadataProvider {
 
             @Override
             public void onError(Error error) {
-                callback.onError(error);
+                if (callback != null) {
+                    callback.onError(error);
+                }
             }
         };
 
