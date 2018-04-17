@@ -143,12 +143,16 @@ public class EMPMetadataProvider implements IMetadataProvider {
     }
 
     public void getMainJson(IMetadataCallback<EmpCustomer> callback) {
-        makeRequest("/config/main.json", new MainConfigBuilder(callback));
+        makeRequest("/config/main.json", new MainConfigBuilder(callback), false);
     }
 
     private void makeRequest(final String path, final IExposureCallback listener) {
+        makeRequest(path, listener, false);
+    }
+
+    private void makeRequest(final String path, final IExposureCallback listener, boolean requireAuth) {
         ExposureClient exposureClient = ExposureClient.getInstance();
-        if (exposureClient.getSessionToken() == null) {
+        if (requireAuth && exposureClient.getSessionToken() == null) {
             listener.onCallCompleted(null, Error.NO_SESSION_TOKEN);
             return;
         }

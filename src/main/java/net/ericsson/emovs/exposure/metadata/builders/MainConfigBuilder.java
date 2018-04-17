@@ -19,12 +19,10 @@ public class MainConfigBuilder extends EmpBaseBuilder implements IExposureCallba
     }
 
     private EmpCustomer getMetadata(JSONObject payload) {
-        EmpCustomer customer = new EmpCustomer();
-        customer.withCarouselGroupId(getCarouselGroupId(payload));
-        return customer;
+        return getCustomerDetails(payload);
     }
 
-    private String getCarouselGroupId(JSONObject mainConfig) {
+    private EmpCustomer getCustomerDetails(JSONObject mainConfig) {
         if (mainConfig == null) {
             return null;
         }
@@ -34,9 +32,15 @@ public class MainConfigBuilder extends EmpBaseBuilder implements IExposureCallba
         }
 
         try {
+            EmpCustomer customer = new EmpCustomer();
+
             JSONObject config = mainConfig.getJSONObject("config");
-            String carouselGroupId = config.getString("carouselGroupId");
-            return carouselGroupId;
+            customer.withCarouselGroupId(config.getString("carouselGroupId"))
+                    .withLogoUrl(config.getString("logoUrl"))
+                    .withServiceName(config.getString("serviceName"));
+
+
+            return customer;
         }
         catch (JSONException e) {
         }
