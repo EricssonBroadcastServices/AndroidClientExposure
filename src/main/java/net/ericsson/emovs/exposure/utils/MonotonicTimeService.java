@@ -31,7 +31,7 @@ public class MonotonicTimeService extends Thread implements IMonotonicTimeServic
 
     public static MonotonicTimeService getInstance() {
         if (!MonotonicTimeServiceHolder.sInstance.isAlive()) {
-            MonotonicTimeServiceHolder.sInstance.start();
+            MonotonicTimeServiceHolder.sInstance.run();
         }
         return MonotonicTimeServiceHolder.sInstance;
     }
