@@ -23,7 +23,7 @@ group='com.github.EricssonBroadcastServices'
 
 ext {
     releaseArtifact = 'empplayer-exposure'
-    releaseVersion = 'r2.0.90'
+    releaseVersion = 'r2.0.90-2'
     releaseDescription = 'The EMP Player library exposure module.'
     libraryTag = 'master-SNAPSHOT'
 }
