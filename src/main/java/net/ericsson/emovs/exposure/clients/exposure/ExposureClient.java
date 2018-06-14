@@ -35,6 +35,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 public class ExposureClient {
     private final static String TAG = "ExposureClient";
@@ -338,6 +340,12 @@ public class ExposureClient {
                         } catch (Exception ignored) {
                         }
                     }
+                }
+
+                Map<String, List<String>> map = mURLConnection.getHeaderFields();
+
+                for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+                    Log.d(TAG, "" + entry.getKey() + " : " + entry.getValue());
                 }
 
                 response.responseCode = mURLConnection.getResponseCode();
