@@ -20,6 +20,7 @@ import android.util.Log;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
 import net.ericsson.emovs.utilities.emp.EMPRegistry;
 import net.ericsson.emovs.utilities.errors.Error;
+import net.ericsson.emovs.utilities.security.CustomSSLSocketFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +33,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class ExposureClient {
     private final static String TAG = "ExposureClient";
@@ -47,6 +51,7 @@ public class ExposureClient {
     //private String mCustomer;
     //private String mBusinessUnit;
     private String mSessionToken;
+    private CustomSSLSocketFactory mCustomSSLSocketFactory = null;
 
     private static class EmpExposureClientHolder {
         private final static ExposureClient sInstance = new ExposureClient();
@@ -57,6 +62,7 @@ public class ExposureClient {
     }
 
     protected ExposureClient() {
+        initCustomSSLSocketFactory();
     }
 
     public String getExposureUrl() {
@@ -107,8 +113,8 @@ public class ExposureClient {
         return new URL(new URL(getExposureUrl()), String.format(BASE_PATH, getCustomer(), getBusinessUnit()));
     }
 
-    private HttpURLConnection getHttpURLConnection(URL url) throws IOException {
-        HttpURLConnection connection = ((HttpURLConnection)url.openConnection());
+    private HttpsURLConnection getHttpURLConnection(URL url) throws IOException {
+        HttpsURLConnection connection = ((HttpsURLConnection) url.openConnection());
         connection.setDoInput(true);
         connection.setConnectTimeout(HTTP_CONNECT_TIMEOUT);
         connection.setReadTimeout(HTTP_READ_TIMEOUT);
@@ -119,13 +125,19 @@ public class ExposureClient {
             connection.setRequestProperty("Authorization", "Bearer " + mSessionToken);
         }
 
+        if (url.getProtocol().toLowerCase().equals("https")) {
+            if (mCustomSSLSocketFactory != null) {
+                connection.setSSLSocketFactory(mCustomSSLSocketFactory);
+            }
+        }
+
         return connection;
     }
 
     public void getAsync(String url, IExposureCallback callback) {
         try {
             URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
-            HttpURLConnection connection = getHttpURLConnection(apiUrl);
+            HttpsURLConnection connection = getHttpURLConnection(apiUrl);
             connection.setRequestMethod("GET");
             connection.setDoOutput(false);
 
@@ -148,7 +160,7 @@ public class ExposureClient {
         try {
             URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
 
-            HttpURLConnection connection = getHttpURLConnection(apiUrl);
+            HttpsURLConnection connection = getHttpURLConnection(apiUrl);
             connection.setRequestMethod("GET");
             connection.setDoOutput(false);
 
@@ -229,7 +241,7 @@ public class ExposureClient {
             if (url.contains("eventsink")) {
                 apiUrl = new URL(getApiUrl(), (url.startsWith("/") ? url : "/" + url));
             }
-            HttpURLConnection connection = getHttpURLConnection(apiUrl);
+            HttpsURLConnection connection = getHttpURLConnection(apiUrl);
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
@@ -247,7 +259,7 @@ public class ExposureClient {
     public void postAsync(String url, JSONObject body, IExposureCallback callback) {
         try {
             URL apiUrl = new URL(getApiUrl(), "/v1/customer/" + getCustomer() + "/businessunit/" + getBusinessUnit() + (url.startsWith("/") ? url : "/" + url));
-            HttpURLConnection connection = getHttpURLConnection(apiUrl);
+            HttpsURLConnection connection = getHttpURLConnection(apiUrl);
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
@@ -269,7 +281,7 @@ public class ExposureClient {
     public void deleteAsync(String url, IExposureCallback callback) {
         try {
             URL apiUrl = new URL(getApiUrl(), url);
-            HttpURLConnection connection = getHttpURLConnection(apiUrl);
+            HttpsURLConnection connection = getHttpURLConnection(apiUrl);
             connection.setRequestMethod("DELETE");
             connection.setDoOutput(false);
 
@@ -290,11 +302,11 @@ public class ExposureClient {
     private class HttpTask extends AsyncTask<Void, Void, ExposureResponse> {
         private final static String TAG = "HttpTask";
 
-        private final HttpURLConnection mURLConnection;
+        private final HttpsURLConnection mURLConnection;
         private final JSONObject mBody;
         private final IExposureCallback mCallback;
 
-        HttpTask(HttpURLConnection connection, JSONObject body, IExposureCallback callback) {
+        HttpTask(HttpsURLConnection connection, JSONObject body, IExposureCallback callback) {
             mURLConnection = connection;
             mBody = body;
             if(mURLConnection.getDoOutput() && null == mBody) {
@@ -407,6 +419,18 @@ public class ExposureClient {
                 }
                 mCallback.onCallCompleted(exposureResponse.responseBody, error);
             }
+        }
+    }
+
+    private void initCustomSSLSocketFactory() {
+        try {
+            mCustomSSLSocketFactory = CustomSSLSocketFactory.createSSLSocketFactory();
+        } catch (KeyManagementException keyManagementException) {
+            Log.e(TAG, "KeyManagementException when trying to instantiate CustomSSLSocketFactory: "
+                       + keyManagementException.toString());
+        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+            Log.e(TAG, "NoSuchAlgorithmException when trying to instantiate CustomSSLSocketFactory: "
+                       + noSuchAlgorithmException.toString());
         }
     }
 }
