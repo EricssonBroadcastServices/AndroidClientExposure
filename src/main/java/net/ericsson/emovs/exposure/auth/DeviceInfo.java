@@ -12,14 +12,21 @@ package net.ericsson.emovs.exposure.auth;
  * THE PRODUCT.
  */
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.MediaDrm;
+import android.media.UnsupportedSchemeException;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import net.ericsson.emovs.utilities.system.CheckRoot;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.UUID;
 
 public class DeviceInfo {
     private static final String TAG = "DeviceInfo";
@@ -78,6 +85,27 @@ public class DeviceInfo {
 
     public String getManufacturer() {
         return Build.MANUFACTURER;
+    }
+
+    public boolean isDeviceRooted() {
+        return CheckRoot.isDeviceRooted();
+    }
+
+    @SuppressLint("WrongConstant")
+    public String getWidevineDrmSecurityLevel() {
+        UUID widevineUUID = new UUID(-1301668207276963122L, -6645017420763422227L);
+        try {
+            MediaDrm mediaDrm = new MediaDrm(widevineUUID);
+            try {
+                return mediaDrm.getPropertyString("securityLevel");
+            } catch (RuntimeException e) {
+                return "Error_"+e.getClass().getSimpleName();
+            } finally {
+                mediaDrm.release();
+            }
+        } catch (UnsupportedSchemeException e) {
+            return "Widevine N/A";
+        }
     }
 
     private static boolean diagonalLargerThanSize(double width, double height, double diagonalTreshold) {
