@@ -16,17 +16,20 @@ import android.util.Log;
 
 import net.ericsson.emovs.exposure.clients.exposure.ExposureClient;
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
+import net.ericsson.emovs.exposure.interfaces.IExposureHeaderCallback;
 import net.ericsson.emovs.utilities.emp.UniversalPackagerHelper;
 import net.ericsson.emovs.utilities.entitlements.Entitlement;
-import net.ericsson.emovs.utilities.errors.Error;
-import net.ericsson.emovs.utilities.entitlements.IEntitlementProvider;
 import net.ericsson.emovs.utilities.entitlements.IEntitlementCallback;
+import net.ericsson.emovs.utilities.entitlements.IEntitlementProvider;
+import net.ericsson.emovs.utilities.errors.Error;
 import net.ericsson.emovs.utilities.errors.ErrorCodes;
 import net.ericsson.emovs.utilities.errors.ErrorRunnable;
 
-import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
+import java.util.Map;
 
 import static java.util.UUID.randomUUID;
 
@@ -172,17 +175,23 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
             return;
         }
         JSONObject requestParams = makePlayRequestParameters(DRM_FORMAT, ABR_FORMAT);
-        ExposureClient.getInstance().postAsync(path, requestParams, new IExposureCallback() {
+        ExposureClient.getInstance().postAsync(path, requestParams, new IExposureHeaderCallback() {
             @Override
             public void onCallCompleted(JSONObject response, Error error) {
-                parseEntitlementResponse(listener, response, error, DRM_FORMAT, ABR_FORMAT);
+            }
+
+            @Override
+            public void onCallCompleted(JSONObject response, Error error, Map<String, List<String>> headerFields) {
+                parseEntitlementResponse(listener, response, error, headerFields, DRM_FORMAT, ABR_FORMAT);
             }
         });
     }
 
     private void parseEntitlementResponse(final IEntitlementCallback callback,
                                           final JSONObject response,
-                                          final Error error, String drmFormat, String abrFormat) {
+                                          final Error error,
+                                          Map<String, List<String>> headerFields,
+                                          String drmFormat, String abrFormat) {
         if (error != null) {
             if (callback != null) {
                 callback.onError(error);
@@ -195,10 +204,14 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
             final String channelId = callback.getChannelId();
             final String programId = callback.getProgramId();
             Entitlement entitlement = fromJson(assetId, channelId, programId, response, drmFormat, abrFormat);
-
+            String requestId = "";
+            List<String> headerRequestIds = headerFields.get("X-Request-Id");
+            if (!headerRequestIds.isEmpty()) {
+                requestId = headerRequestIds.get(0);
+            }
             if (entitlement != null) {
-                if(callback != null) {
-                    callback.onEntitlement(entitlement);
+                if (callback != null) {
+                    callback.onEntitlement(entitlement, requestId);
                 }
                 return;
             }
