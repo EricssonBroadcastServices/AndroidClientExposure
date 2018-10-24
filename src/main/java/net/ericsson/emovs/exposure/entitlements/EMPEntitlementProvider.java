@@ -178,6 +178,7 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
         ExposureClient.getInstance().postAsync(path, requestParams, new IExposureHeaderCallback() {
             @Override
             public void onCallCompleted(JSONObject response, Error error) {
+                parseEntitlementResponse(listener, response, error, null, DRM_FORMAT, ABR_FORMAT);
             }
 
             @Override
@@ -205,9 +206,11 @@ public class EMPEntitlementProvider implements IEntitlementProvider {
             final String programId = callback.getProgramId();
             Entitlement entitlement = fromJson(assetId, channelId, programId, response, drmFormat, abrFormat);
             String requestId = "";
-            List<String> headerRequestIds = headerFields.get("X-Request-Id");
-            if (!headerRequestIds.isEmpty()) {
-                requestId = headerRequestIds.get(0);
+            if (headerFields != null) {
+                List<String> headerRequestIds = headerFields.get("X-Request-Id");
+                if (!headerRequestIds.isEmpty()) {
+                    requestId = headerRequestIds.get(0);
+                }
             }
             if (entitlement != null) {
                 if (callback != null) {
