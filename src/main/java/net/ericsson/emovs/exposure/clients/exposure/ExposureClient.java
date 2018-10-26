@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import net.ericsson.emovs.exposure.interfaces.IExposureCallback;
+import net.ericsson.emovs.exposure.interfaces.IExposureHeaderCallback;
 import net.ericsson.emovs.utilities.emp.EMPRegistry;
 import net.ericsson.emovs.utilities.errors.Error;
 import net.ericsson.emovs.utilities.security.CustomSSLSocketFactory;
@@ -353,6 +354,7 @@ public class ExposureClient {
                 }
 
                 response.responseCode = mURLConnection.getResponseCode();
+                response.headerFields = mURLConnection.getHeaderFields();
 
                 if (mURLConnection.getDoInput()) {
                     StringBuilder strResponse = new StringBuilder();
@@ -417,7 +419,11 @@ public class ExposureClient {
                         error = Error.INVALID_JSON;
                     }
                 }
-                mCallback.onCallCompleted(exposureResponse.responseBody, error);
+                if (mCallback instanceof IExposureHeaderCallback) {
+                    ((IExposureHeaderCallback) mCallback).onCallCompleted(exposureResponse.responseBody, error, exposureResponse.headerFields);
+                } else {
+                    mCallback.onCallCompleted(exposureResponse.responseBody, error);
+                }
             }
         }
     }

@@ -13,7 +13,11 @@ package net.ericsson.emovs.exposure.clients.exposure;
 
 import org.json.JSONObject;
 
+import java.util.List;
+import java.util.Map;
+
 public class ExposureResponse {
     int responseCode;
+    Map<String,List<String>> headerFields;
     JSONObject responseBody;
 }
