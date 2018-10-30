@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.0.94
+
+### Enhancements
+- **EMP-11688** Added requestId to analytics.
+
 ## 2.0.91
 
 ### Enhancements
